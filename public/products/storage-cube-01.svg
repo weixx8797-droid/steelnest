@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#FAFBFB"/>
+  <g transform="translate(50, 30)">
+    <!-- Two cubes stacked -->
+    <!-- Cube 1 (left) -->
+    <polygon points="0,80 60,50 180,50 120,80" fill="#E0E0E0" stroke="#2D3436" stroke-width="1.5"/>
+    <polygon points="0,80 0,180 60,210 60,110" fill="#D0D0D0" stroke="#2D3436" stroke-width="1.5"/>
+    <polygon points="120,80 120,180 60,210 60,110" fill="#C8C8C8" stroke="#2D3436" stroke-width="1.5"/>
+    <!-- Cube 2 (right) -->
+    <polygon points="120,80 180,50 300,50 240,80" fill="#E0E0E0" stroke="#2D3436" stroke-width="1.5"/>
+    <polygon points="240,80 240,180 180,210 180,110" fill="#D0D0D0" stroke="#2D3436" stroke-width="1.5"/>
+    <!-- Copper accent connector -->
+    <rect x="175" y="100" width="10" height="20" rx="2" fill="#C9A96E"/>
+  </g>
+  <text x="200" y="380" text-anchor="middle" fill="#B0B5B7" font-size="11" font-family="sans-serif">SteelNest · Product Photo</text>
+</svg>
