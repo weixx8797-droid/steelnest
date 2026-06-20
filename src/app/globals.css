@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ============================================
+   SteelNest Brand Theme — 品牌颜色 + 字体
+   ============================================ */
+
+@theme inline {
+  /* 品牌主色 */
+  --color-brand-charcoal: #2D3436;
+  --color-brand-steel: #636E72;
+  --color-brand-copper: #C9A96E;
+  --color-brand-leaf: #4A7C59;
+  --color-brand-cream: #FAFBFB;
+  --color-brand-light: #F0F2F2;
+
+  /* 字体 */
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+}
+
+/* 全局基础样式 */
+body {
+  background: var(--color-brand-cream);
+  color: var(--color-brand-charcoal);
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 标题统一用衬线体 */
+h1, h2, h3, .font-serif {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+/* 自定义工具类 */
+@utility container-page {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* 品牌按钮基础样式 — 用 hover:btn-copper 触发悬停效果 */

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 120" width="600" height="120">
+  <!-- SteelNest Full Logo: Icon + Text -->
+  <defs>
+    <linearGradient id="steelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2D3436;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#636E72;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="copperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C9A96E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8953E;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Icon (scaled to left side) -->
+  <g transform="translate(10, 10) scale(0.5)">
+    <polygon points="100,20 170,60 170,120 100,160 30,120 30,60"
+             fill="none" stroke="url(#steelGrad)" stroke-width="4"
+             stroke-linejoin="round" />
+    <line x1="30" y1="60" x2="170" y2="120" stroke="url(#steelGrad)" stroke-width="2.5" opacity="0.6"/>
+    <line x1="170" y1="60" x2="30" y2="120" stroke="url(#steelGrad)" stroke-width="2.5" opacity="0.6"/>
+    <line x1="100" y1="20" x2="100" y2="160" stroke="url(#steelGrad)" stroke-width="2.5" opacity="0.6"/>
+    <line x1="30" y1="60" x2="100" y2="160" stroke="url(#steelGrad)" stroke-width="2" opacity="0.4"/>
+    <line x1="170" y1="60" x2="100" y2="160" stroke="url(#steelGrad)" stroke-width="2" opacity="0.4"/>
+    <path d="M100,90 C95,75 80,65 85,50 C90,65 100,72 100,90"
+          fill="#4A7C59" opacity="0.85" />
+    <path d="M100,90 C105,75 120,65 115,50 C110,65 100,72 100,90"
+          fill="#5B8C6A" opacity="0.85" />
+    <circle cx="100" cy="90" r="3" fill="url(#copperGrad)" />
+  </g>
+
+  <!-- Brand text -->
+  <text x="115" y="70" font-family="'Helvetica Neue', Arial, sans-serif" font-size="36" font-weight="700" fill="#2D3436" letter-spacing="1">SteelNest</text>
+
+  <!-- Tagline -->
+  <text x="117" y="95" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="400" fill="#636E72" letter-spacing="3">STEEL OVER WOOD</text>
+
+  <!-- Copper underline accent -->
+  <rect x="115" y="102" width="50" height="2" rx="1" fill="#C9A96E" />
+</svg>
