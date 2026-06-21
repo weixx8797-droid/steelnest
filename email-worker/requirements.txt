@@ -1,0 +1,13 @@
+# SteelNest 自动询盘邮件系统 — Python 依赖
+# 安装: pip install -r requirements.txt
+
+# 邮件发送
+smtplib  # Python 内置，无需安装
+imaplib  # Python 内置，无需安装
+email    # Python 内置，无需安装
+
+# AI 解析（可选 — 不装也能用，会自动降级）
+openai>=1.0.0
+
+# 其他
+python-dotenv>=1.0.0  # 环境变量加载（可选）

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Providers from "@/components/Providers";
+import LayoutWrapper from "@/components/LayoutWrapper";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { OrganizationJsonLd } from "@/lib/structured-data";
 import "./globals.css";
@@ -83,16 +81,7 @@ export default function RootLayout({
       className={`${inter.variable} ${playfair.variable} h-full`}
     >
       <body className="min-h-full flex flex-col bg-brand-cream text-brand-charcoal antialiased">
-        <Providers>
-          {/* 顶部导航栏 */}
-          <Header />
-
-          {/* 页面主体内容 */}
-          <main className="flex-1">{children}</main>
-
-          {/* 底部页脚 */}
-          <Footer />
-        </Providers>
+        <LayoutWrapper>{children}</LayoutWrapper>
 
         {/* Google Analytics（仅生产环境加载） */}
         <GoogleAnalytics />
