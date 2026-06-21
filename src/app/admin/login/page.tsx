@@ -5,11 +5,12 @@
  * 输入密码 → 调 API → 成功后跳转到 /admin
  */
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
-export default function AdminLoginPage() {
+/** 登录表单组件（使用 useSearchParams，需要 Suspense） */
+function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -66,15 +67,9 @@ export default function AdminLoginPage() {
         </div>
 
         {/* 登录表单 */}
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white rounded-lg p-6 shadow-lg space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg p-6 shadow-lg space-y-4">
           <div>
-            <label
-              htmlFor="password"
-              className="block text-xs font-medium text-gray-500 mb-1.5"
-            >
+            <label htmlFor="password" className="block text-xs font-medium text-gray-500 mb-1.5">
               管理员密码
             </label>
             <input
@@ -90,9 +85,7 @@ export default function AdminLoginPage() {
           </div>
 
           {error && (
-            <p className="text-xs text-red-500 bg-red-50 px-3 py-2 rounded">
-              {error}
-            </p>
+            <p className="text-xs text-red-500 bg-red-50 px-3 py-2 rounded">{error}</p>
           )}
 
           <button
@@ -109,5 +102,14 @@ export default function AdminLoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+/** 用 Suspense 包裹登录表单（Next.js 静态构建要求） */
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-brand-charcoal"><p className="text-white">Loading...</p></div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

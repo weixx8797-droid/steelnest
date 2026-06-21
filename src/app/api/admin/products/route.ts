@@ -4,7 +4,7 @@
  */
 
 import { NextResponse } from "next/server";
-import { getAllProducts, getProductBySlug, products, type Product } from "@/data/products";
+import { getAllProducts, getProductBySlug, type Product } from "@/data/products";
 
 export async function GET() {
   const allProducts = getAllProducts();
@@ -34,7 +34,8 @@ export async function PUT(request: Request) {
 
     for (const key of allowedFields) {
       if (key in updates) {
-        (product as Record<string, unknown>)[key] = updates[key];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (product as any)[key] = updates[key];
       }
     }
 
