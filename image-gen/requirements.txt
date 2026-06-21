@@ -1,0 +1,4 @@
+# SteelNest AI 营销图生成 — Python 依赖
+pip install requests Pillow
+# 可选：环境变量加载
+pip install python-dotenv
