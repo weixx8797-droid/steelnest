@@ -1,0 +1,32 @@
+{
+  "brand": {
+    "name": "SteelNest",
+    "slogan": "Steel Over Wood — Stronger Homes, Fewer Trees",
+    "primaryColor": "#C9A96E",
+    "logoPath": "/logo-icon.svg"
+  },
+  "shipping": {
+    "freeThreshold": 49,
+    "flatFee": 5.99
+  },
+  "pricing": {
+    "defaultMarkupMultiplier": 3,
+    "currency": "USD"
+  },
+  "email": {
+    "smtpHost": "",
+    "smtpPort": 587,
+    "senderEmail": "",
+    "senderName": "SteelNest Sourcing",
+    "provider": "resend"
+  },
+  "accio": {
+    "enabled": false,
+    "apiEndpoint": ""
+  },
+  "apiBudget": {
+    "openaiMonthlyLimit": 10,
+    "imageApiMonthlyLimit": 5,
+    "currency": "USD"
+  }
+}

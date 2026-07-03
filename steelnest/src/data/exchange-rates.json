@@ -1,0 +1,13 @@
+{
+  "base": "USD",
+  "rates": {
+    "CNY": 7.25,
+    "EUR": 0.92,
+    "GBP": 0.79,
+    "JPY": 149.5,
+    "CAD": 1.36,
+    "AUD": 1.52
+  },
+  "updatedAt": "2026-06-20T00:00:00Z",
+  "source": "manual"
+}

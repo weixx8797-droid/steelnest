@@ -1,0 +1,9 @@
+{
+  "records": [],
+  "summary": {
+    "openai": { "calls": 0, "tokens": 0, "estimatedCost": 0 },
+    "imageApi": { "calls": 0, "images": 0, "estimatedCost": 0 },
+    "emailSent": 0,
+    "exchangeRateApi": { "calls": 0 }
+  }
+}

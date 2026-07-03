@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <rect width="400" height="400" fill="#FAFBFB"/>
+  <g transform="translate(80, 40)">
+    <!-- Wall mount plate -->
+    <rect x="15" y="10" width="210" height="20" rx="3" fill="#4A4F52"/>
+    <!-- Baskets -->
+    <rect x="20" y="40" width="200" height="10" rx="2" fill="#2D3436"/>
+    <path d="M20,50 L15,90 L225,90 L220,50" fill="#E8E8E8" stroke="#2D3436" stroke-width="1.5"/>
+    <rect x="20" y="100" width="200" height="10" rx="2" fill="#2D3436"/>
+    <path d="M20,110 L15,150 L225,150 L220,110" fill="#E8E8E8" stroke="#2D3436" stroke-width="1.5"/>
+    <!-- Bottom basket -->
+    <rect x="20" y="160" width="200" height="10" rx="2" fill="#2D3436"/>
+    <path d="M20,170 L15,200 L225,200 L220,170" fill="#E8E8E8" stroke="#2D3436" stroke-width="1.5"/>
+    <!-- Grid lines (drainage) -->
+    <line x1="60" y1="60" x2="60" y2="85" stroke="#D0D0D0" stroke-width="0.8"/>
+    <line x1="120" y1="60" x2="120" y2="85" stroke="#D0D0D0" stroke-width="0.8"/>
+    <line x1="180" y1="60" x2="180" y2="85" stroke="#D0D0D0" stroke-width="0.8"/>
+  </g>
+  <text x="200" y="380" text-anchor="middle" fill="#B0B5B7" font-size="11" font-family="sans-serif">SteelNest · Product Photo</text>
+</svg>

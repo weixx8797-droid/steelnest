@@ -1,0 +1,17 @@
+[
+  {
+    "id": "sup_001",
+    "companyName": "示例供应商 - 洛阳钢铁制品厂",
+    "contactName": "张经理",
+    "email": "example@supplier.com",
+    "whatsapp": "+86-138-0000-0000",
+    "website": "https://example.en.alibaba.com",
+    "country": "CN",
+    "productCategories": ["steel storage", "home organization"],
+    "rating": 4,
+    "notes": "这是示例数据，你可以在管理后台修改或删除",
+    "createdAt": "2026-06-20T00:00:00Z",
+    "updatedAt": "2026-06-20T00:00:00Z",
+    "status": "active"
+  }
+]
