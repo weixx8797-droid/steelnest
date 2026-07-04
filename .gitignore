@@ -7,3 +7,7 @@ Thumbs.db
 .env
 .env.local
 .env.local.example
+auth.json
+config.json
+telemetry-*.json
+.vercel
