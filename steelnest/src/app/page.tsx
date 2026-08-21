@@ -2,6 +2,9 @@ import Link from "next/link";
 import { getFeaturedProducts } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 
+// 每次请求都读取最新 products.json，保证后台编辑后前台立即生效
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   const featuredProducts = getFeaturedProducts();
   return (

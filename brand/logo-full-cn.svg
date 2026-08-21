@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 56" width="360" height="56">
+  <!-- 钢巢 Logo 中文完整版 — 导航栏横排 -->
+  <defs>
+    <linearGradient id="steelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2D3436;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#636E72;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="copperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C9A96E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8953E;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Icon -->
+  <g transform="translate(2, 2) scale(0.26)">
+    <polygon points="100,20 170,60 170,120 100,160 30,120 30,60"
+             fill="none" stroke="url(#steelGrad)" stroke-width="4"
+             stroke-linejoin="round" />
+    <line x1="30" y1="60" x2="170" y2="120" stroke="url(#steelGrad)" stroke-width="2.5" opacity="0.6"/>
+    <line x1="170" y1="60" x2="30" y2="120" stroke="url(#steelGrad)" stroke-width="2.5" opacity="0.6"/>
+    <line x1="100" y1="20" x2="100" y2="160" stroke="url(#steelGrad)" stroke-width="2.5" opacity="0.6"/>
+    <line x1="30" y1="60" x2="100" y2="160" stroke="url(#steelGrad)" stroke-width="2" opacity="0.4"/>
+    <line x1="170" y1="60" x2="100" y2="160" stroke="url(#steelGrad)" stroke-width="2" opacity="0.4"/>
+    <line x1="30" y1="120" x2="100" y2="20" stroke="url(#steelGrad)" stroke-width="2" opacity="0.4"/>
+    <line x1="170" y1="120" x2="100" y2="20" stroke="url(#steelGrad)" stroke-width="2" opacity="0.4"/>
+    <path d="M100,90 C95,75 80,65 85,50 C90,65 100,72 100,90"
+          fill="#4A7C59" opacity="0.85" />
+    <path d="M100,90 C105,75 120,65 115,50 C110,65 100,72 100,90"
+          fill="#5B8C6A" opacity="0.85" />
+    <circle cx="100" cy="90" r="3" fill="url(#copperGrad)" />
+  </g>
+
+  <!-- 中文品牌名 -->
+  <text x="64" y="30"
+        font-family="'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'SimHei', sans-serif"
+        font-size="20" font-weight="700" fill="#2D3436" letter-spacing="4">钢 巢</text>
+
+  <!-- 分隔点 -->
+  <circle cx="55" cy="28" r="2" fill="#C9A96E" opacity="0.7" />
+
+  <!-- Slogan -->
+  <text x="64" y="48"
+        font-family="'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif"
+        font-size="10" font-weight="500" fill="#636E72" letter-spacing="2">以钢代木</text>
+
+  <!-- 英文副标题 -->
+  <text x="200" y="36"
+        font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
+        font-size="12" font-weight="500" fill="#636E72" letter-spacing="1">SteelNest</text>
+</svg>

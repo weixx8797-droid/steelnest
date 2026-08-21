@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/data/products";
 
@@ -10,12 +9,11 @@ export default function ProductCard({ product }: { product: Product }) {
     >
       {/* ---- 产品图片 ---- */}
       <div className="relative aspect-square bg-brand-light overflow-hidden">
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={product.images[0]}
           alt={product.name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
 
         {/* 折扣/新品标签 */}

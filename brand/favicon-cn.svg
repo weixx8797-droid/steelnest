@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <!-- 钢巢 Favicon — 中文站 -->
+  <defs>
+    <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2D3436"/>
+      <stop offset="100%" style="stop-color:#636E72"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Hexagonal nest background -->
+  <polygon points="24,3 42,12 42,33 24,42 6,33 6,12"
+           fill="#2D3436" stroke-linejoin="round" />
+
+  <!-- Inner woven lines -->
+  <line x1="6" y1="12" x2="42" y2="33" stroke="#636E72" stroke-width="1" opacity="0.6"/>
+  <line x1="42" y1="12" x2="6" y2="33" stroke="#636E72" stroke-width="1" opacity="0.6"/>
+  <line x1="24" y1="3" x2="24" y2="42" stroke="#636E72" stroke-width="1" opacity="0.6"/>
+
+  <!-- Leaf -->
+  <ellipse cx="19" cy="19" rx="4.5" ry="7" transform="rotate(-30, 19, 19)"
+           fill="#4A7C59" opacity="0.9"/>
+  <ellipse cx="29" cy="19" rx="4.5" ry="7" transform="rotate(30, 29, 19)"
+           fill="#5B8C6A" opacity="0.9"/>
+
+  <!-- Copper dot -->
+  <circle cx="24" cy="22" r="2.2" fill="#C9A96E"/>
+
+  <!-- 中文 "钢" 字（右下角小标） -->
+  <text x="24" y="32" text-anchor="middle"
+        font-family="'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif"
+        font-size="6" font-weight="700" fill="#FAFBFB" letter-spacing="0">钢</text>
+</svg>

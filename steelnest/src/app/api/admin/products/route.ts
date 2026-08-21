@@ -1,16 +1,17 @@
 /**
  * GET /api/admin/products — 获取产品列表
- * POST /api/admin/products — 新建产品（添加到 products.ts 格式的发布队列）
- * PUT /api/admin/products — 更新产品信息
+ * POST /api/admin/products — 新建产品（写入 products.json，立即可用）
+ * PUT /api/admin/products — 更新产品信息（持久化到 products.json）
  */
 
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { getAllProducts, getProductBySlug, type Product } from "@/data/products";
-import fs from "fs";
-import path from "path";
-
-const PUBLISHED_FILE = path.join(process.cwd(), "src/data/sourcing-queue.json");
+import {
+  getAllProducts,
+  getProductBySlug,
+  writeProducts,
+  type Product,
+} from "@/data/products";
 
 export async function GET() {
   const allProducts = getAllProducts();
@@ -25,7 +26,14 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     // 生成新产品的 slug
-    const slug = body.slug || body.englishName?.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "").slice(0, 60) || `product-${Date.now()}`;
+    const slug =
+      body.slug ||
+      body.englishName
+        ?.toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "")
+        .slice(0, 60) ||
+      `product-${Date.now()}`;
 
     // 检查 slug 是否已存在
     const existing = getProductBySlug(slug);
@@ -51,29 +59,12 @@ export async function POST(request: Request) {
       discount: body.discount || undefined,
     };
 
-    // 添加到铺货队列（已发布状态）
-    let queue: unknown[] = [];
-    try {
-      queue = JSON.parse(fs.readFileSync(PUBLISHED_FILE, "utf-8"));
-    } catch {
-      queue = [];
-    }
+    // 写入 products.json，立即可用
+    const all = getAllProducts();
+    all.push(newProduct);
+    writeProducts(all);
 
-    const publishedItem = {
-      id: `pub_${Date.now()}`,
-      slug,
-      productData: newProduct,
-      status: "pending_publish",
-      createdAt: new Date().toISOString(),
-    };
-    queue.push(publishedItem);
-    fs.writeFileSync(PUBLISHED_FILE, JSON.stringify(queue, null, 2), "utf-8");
-
-    return NextResponse.json({
-      ok: true,
-      product: newProduct,
-      note: "产品已创建，需要同步到 products.ts 后重新部署才能在前台展示",
-    });
+    return NextResponse.json({ ok: true, product: newProduct });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "创建失败" },
@@ -92,7 +83,8 @@ export async function PUT(request: Request) {
 
     if (!slug) return NextResponse.json({ error: "缺少 slug" }, { status: 400 });
 
-    const product = getProductBySlug(slug);
+    const all = getAllProducts();
+    const product = all.find((p) => p.slug === slug);
     if (!product) return NextResponse.json({ error: "产品不存在" }, { status: 404 });
 
     const allowedFields = [
@@ -107,6 +99,9 @@ export async function PUT(request: Request) {
         (product as any)[key] = updates[key];
       }
     }
+
+    // 持久化回 products.json
+    writeProducts(all);
 
     return NextResponse.json({ ok: true, product });
   } catch (error) {

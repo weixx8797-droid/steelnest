@@ -5,7 +5,7 @@
  * 查看产品列表、编辑产品信息、上架/下架
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { Product } from "@/data/products";
 
 export default function AdminProductsPage() {
@@ -14,6 +14,8 @@ export default function AdminProductsPage() {
   const [editing, setEditing] = useState<Product | null>(null);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [imageUrlInput, setImageUrlInput] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 加载产品列表
   const loadProducts = () => {
@@ -53,6 +55,52 @@ export default function AdminProductsPage() {
     } finally {
       setSaving(false);
     }
+  };
+
+  // 上传图片文件 → 转 base64 data URL
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        setEditing((prev) =>
+          prev ? { ...prev, images: [...prev.images, dataUrl] } : prev
+        );
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // 重置 input，允许重复选择同一文件
+    e.target.value = "";
+  };
+
+  // 添加图片 URL
+  const handleAddImageUrl = () => {
+    const url = imageUrlInput.trim();
+    if (!url || !editing) return;
+    setEditing({ ...editing, images: [...editing.images, url] });
+    setImageUrlInput("");
+  };
+
+  // 删除某张图片
+  const removeImage = (index: number) => {
+    if (!editing) return;
+    setEditing({
+      ...editing,
+      images: editing.images.filter((_, i) => i !== index),
+    });
+  };
+
+  // 设为封面（移到第一位）
+  const setAsCover = (index: number) => {
+    if (!editing || index === 0) return;
+    const images = [...editing.images];
+    const [img] = images.splice(index, 1);
+    images.unshift(img);
+    setEditing({ ...editing, images });
   };
 
   // 快速切换上架状态
@@ -207,6 +255,98 @@ export default function AdminProductsPage() {
                   }
                   className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                 />
+              </div>
+
+              {/* 产品图片 */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  产品图片（第一张为主图）
+                </label>
+
+                {/* 缩略图网格 */}
+                {editing.images.length > 0 && (
+                  <div className="grid grid-cols-4 gap-2 mb-2">
+                    {editing.images.map((img, i) => (
+                      <div
+                        key={i}
+                        className="relative aspect-square rounded border border-gray-200 overflow-hidden group"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={img}
+                          alt={`图片 ${i + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                        {i === 0 && (
+                          <span className="absolute top-1 left-1 text-[10px] bg-brand-copper text-white px-1 py-0.5 rounded">
+                            主图
+                          </span>
+                        )}
+                        <div className="absolute bottom-0 inset-x-0 flex justify-between items-center bg-black/60 px-1 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          {i !== 0 && (
+                            <button
+                              type="button"
+                              onClick={() => setAsCover(i)}
+                              className="text-[10px] text-white hover:text-brand-copper"
+                            >
+                              设为主图
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => removeImage(i)}
+                            className="text-[10px] text-red-300 hover:text-red-500"
+                          >
+                            删除
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  {/* 上传按钮 */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full px-3 py-2 text-sm border border-dashed border-gray-300 rounded text-gray-500 hover:border-brand-copper hover:text-brand-copper transition-colors"
+                  >
+                    📤 上传图片（可多选）
+                  </button>
+
+                  {/* URL 添加 */}
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="或粘贴图片 URL 链接"
+                      value={imageUrlInput}
+                      onChange={(e) => setImageUrlInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleAddImageUrl();
+                        }
+                      }}
+                      className="flex-1 px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddImageUrl}
+                      className="px-3 py-2 text-sm bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors"
+                    >
+                      添加
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* 售价 */}

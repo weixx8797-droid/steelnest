@@ -1,7 +1,6 @@
 "use client";
 
 import { useCart } from "@/lib/cart-context";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function CartDrawer() {
@@ -121,12 +120,11 @@ export default function CartDrawer() {
               >
                 {/* 产品缩略图 */}
                 <div className="relative w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-brand-light">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={item.product.images[0]}
                     alt={item.product.name}
-                    fill
-                    className="object-cover"
-                    sizes="80px"
+                    className="absolute inset-0 w-full h-full object-cover"
                   />
                 </div>
 

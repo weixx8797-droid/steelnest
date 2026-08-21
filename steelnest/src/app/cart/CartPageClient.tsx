@@ -1,7 +1,6 @@
 "use client";
 
 import { useCart } from "@/lib/cart-context";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function CartPageClient() {
@@ -59,12 +58,11 @@ export default function CartPageClient() {
               href={`/products/${item.product.slug}`}
               className="relative w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-brand-light"
             >
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={item.product.images[0]}
                 alt={item.product.name}
-                fill
-                className="object-cover"
-                sizes="96px"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             </Link>
 

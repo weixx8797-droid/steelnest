@@ -1,15 +1,21 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import { getProductBySlug, getFeaturedProducts } from "@/data/products";
+import {
+  getProductBySlug,
+  getFeaturedProducts,
+  getAllProducts,
+} from "@/data/products";
 import ProductCard from "@/components/ProductCard";
+import ProductGallery from "@/components/ProductGallery";
 import AddToCartButton from "@/components/AddToCartButton";
 import { ProductJsonLd } from "@/lib/structured-data";
 
+// 每次请求都读取最新 products.json，保证后台编辑后前台立即生效
+export const dynamic = "force-dynamic";
+
 // ====== 告诉 Next.js 哪些页面需要预生成 ======
 export async function generateStaticParams() {
-  const { products } = await import("@/data/products");
-  return products.map((p) => ({ slug: p.slug }));
+  return getAllProducts().map((p) => ({ slug: p.slug }));
 }
 
 // ====== 动态 SEO 标题 ======
@@ -75,47 +81,12 @@ export default async function ProductPage({
 
         {/* ====== 产品主体：左图右文 ====== */}
         <div className="grid md:grid-cols-2 gap-10 lg:gap-16">
-          {/* ---- 左：图片轮播（简化版，展示两张图） ---- */}
-          <div className="space-y-4">
-            <div className="relative aspect-square bg-brand-light rounded-xl overflow-hidden">
-              <Image
-                src={product.images[0]}
-                alt={product.name}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-              />
-              {product.discount && (
-                <span
-                  className={`absolute top-4 left-4 px-3 py-1.5 text-xs font-bold uppercase tracking-wider rounded ${
-                    product.discount === "NEW"
-                      ? "bg-brand-leaf text-white"
-                      : "bg-brand-copper text-white"
-                  }`}
-                >
-                  {product.discount}
-                </span>
-              )}
-            </div>
-            {/* 缩略图列表 */}
-            <div className="flex gap-3">
-              {product.images.map((img, i) => (
-                <div
-                  key={i}
-                  className="relative w-20 h-20 rounded-lg overflow-hidden border-2 border-gray-200 hover:border-brand-copper cursor-pointer transition-colors"
-                >
-                  <Image
-                    src={img}
-                    alt={`${product.name} view ${i + 1}`}
-                    fill
-                    className="object-cover"
-                    sizes="80px"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* ---- 左：产品图片画廊（点击缩略图切换大图） ---- */}
+          <ProductGallery
+            images={product.images}
+            name={product.name}
+            discount={product.discount}
+          />
 
           {/* ---- 右：产品信息 ---- */}
           <div className="space-y-6">
