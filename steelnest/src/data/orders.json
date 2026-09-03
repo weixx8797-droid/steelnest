@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "id": "ord_1787480442329",
+    "orderNumber": "SN-20260823-NS8J",
+    "customerEmail": "test@example.com",
+    "shippingAddress": {
+      "name": "Test User",
+      "line1": "123 Main St",
+      "city": "New York",
+      "state": "NY",
+      "postalCode": "10001",
+      "country": "US"
+    },
+    "items": [
+      {
+        "productSlug": "desk-organizer",
+        "productName": "Desktop Organizer",
+        "color": "Charcoal Black",
+        "quantity": 2,
+        "unitPrice": 29.99
+      }
+    ],
+    "subtotal": 59.98,
+    "shipping": 0,
+    "total": 59.98,
+    "paymentMethod": "stripe",
+    "paymentStatus": "paid",
+    "status": "pending",
+    "sourcing": {
+      "status": "none"
+    },
+    "createdAt": "2026-08-23T10:20:42.329Z",
+    "updatedAt": "2026-08-23T10:20:42.329Z"
+  }
+]
