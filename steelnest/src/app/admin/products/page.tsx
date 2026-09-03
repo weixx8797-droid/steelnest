@@ -13,6 +13,7 @@ export default function AdminProductsPage() {
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Product | null>(null);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
   const [imageUrlInput, setImageUrlInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -73,24 +74,40 @@ export default function AdminProductsPage() {
     }
   };
 
-  // 上传图片文件 → 转 base64 data URL
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 上传图片文件 → 先传到 Blob/服务器，拿到图片 URL 再保存
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
-
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const dataUrl = reader.result as string;
+    setUploading(true);
+    setMessage("");
+    try {
+      for (const file of files) {
+        if (file.size > 3 * 1024 * 1024) {
+          setMessage("❌ 图片超过 3MB，请压缩后再传");
+          continue;
+        }
+        const form = new FormData();
+        form.append("file", file);
+        const res = await fetch("/api/admin/upload-image", {
+          method: "POST",
+          body: form,
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          setMessage("❌ 图片上传失败：" + (data.error || "状态 " + res.status));
+          continue;
+        }
+        const url = data.url as string;
         setEditing((prev) =>
-          prev ? { ...prev, images: [...prev.images, dataUrl] } : prev
+          prev ? { ...prev, images: [...prev.images, url] } : prev
         );
-      };
-      reader.readAsDataURL(file);
-    });
-
-    // 重置 input，允许重复选择同一文件
-    e.target.value = "";
+      }
+    } catch {
+      setMessage("❌ 网络错误，图片未上传");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
   };
 
   // 添加图片 URL
@@ -130,22 +147,38 @@ export default function AdminProductsPage() {
     loadProducts();
   };
 
-  // 新增产品：上传图片 → base64
-  const handleNewFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // 新增产品：上传图片 → 先传到 Blob/服务器，拿到图片 URL 再保存
+  const handleNewFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const dataUrl = reader.result as string;
-        setNewProduct((prev) => ({
-          ...prev,
-          images: [...prev.images, dataUrl],
-        }));
-      };
-      reader.readAsDataURL(file);
-    });
-    e.target.value = "";
+    setUploading(true);
+    setMessage("");
+    try {
+      for (const file of files) {
+        if (file.size > 3 * 1024 * 1024) {
+          setMessage("❌ 图片超过 3MB，请压缩后再传");
+          continue;
+        }
+        const form = new FormData();
+        form.append("file", file);
+        const res = await fetch("/api/admin/upload-image", {
+          method: "POST",
+          body: form,
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          setMessage("❌ 图片上传失败：" + (data.error || "状态 " + res.status));
+          continue;
+        }
+        const url = data.url as string;
+        setNewProduct((prev) => ({ ...prev, images: [...prev.images, url] }));
+      }
+    } catch {
+      setMessage("❌ 网络错误，图片未上传");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
   };
 
   const handleAddNewImageUrl = () => {
@@ -241,9 +274,9 @@ export default function AdminProductsPage() {
         </div>
       </div>
 
-      {message && (
+      {(message || uploading) && (
         <div className="text-sm px-3 py-2 bg-gray-50 border border-gray-200 rounded">
-          {message}
+          {uploading ? "图片上传中..." : message}
         </div>
       )}
 
@@ -481,6 +514,7 @@ export default function AdminProductsPage() {
                   accept="image/*"
                   multiple
                   onChange={handleNewFileUpload}
+                      disabled={uploading}
                   className="hidden"
                 />
                 <button
@@ -669,6 +703,7 @@ export default function AdminProductsPage() {
                     accept="image/*"
                     multiple
                     onChange={handleFileUpload}
+                      disabled={uploading}
                     className="hidden"
                   />
                   <button

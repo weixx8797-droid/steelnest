@@ -2,3 +2,4 @@
 
 # Trigger redeploy
 *.tsbuildinfo
+public/uploads/
