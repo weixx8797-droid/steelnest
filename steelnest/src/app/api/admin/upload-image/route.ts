@@ -50,12 +50,22 @@ export async function POST(request: Request) {
       .toString(36)
       .slice(2, 8)}.${ext}`;
 
-    if (process.env.BLOB_READ_WRITE_TOKEN) {
+    // 产品图片走独立的 Public Blob store（环境变量前缀 PRODUCT_IMG_）
+    const imageToken = process.env.PRODUCT_IMG_READ_WRITE_TOKEN;
+    if (imageToken) {
       const blob = await put(filename, buffer, {
         access: "public",
         contentType: file.type,
+        token: imageToken,
       });
       return NextResponse.json({ ok: true, url: blob.url });
+    }
+
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      return NextResponse.json(
+        { error: "图片需要 Public Blob store：请创建并连接 PRODUCT_IMG_ 前缀的公开图片 store" },
+        { status: 500 }
+      );
     }
 
     // 本地开发回退：保存到 public/uploads/
