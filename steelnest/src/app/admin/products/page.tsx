@@ -66,7 +66,8 @@ export default function AdminProductsPage() {
         setEditing(null);
         loadProducts();
       } else {
-        setMessage("❌ 保存失败");
+        const data = await res.json().catch(() => ({}));
+        setMessage("❌ 保存失败：" + (data.error || "状态 " + res.status));
       }
     } catch {
       setMessage("❌ 网络错误");
