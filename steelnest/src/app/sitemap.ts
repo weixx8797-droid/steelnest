@@ -5,7 +5,7 @@ import { getAllProducts } from "@/data/products";
  * sitemap.xml — 搜索引擎靠这个发现你网站的所有页面
  * Next.js 在 /sitemap.xml 自动提供此文件
  */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
   // 静态页面
@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // 产品动态页面
-  const products = getAllProducts();
+  const products = await getAllProducts();
   const productPages = products.map((p) => ({
     url: `${siteUrl}/products/${p.slug}`,
     lastModified: new Date(),

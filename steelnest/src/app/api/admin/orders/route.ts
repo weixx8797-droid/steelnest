@@ -9,7 +9,7 @@ import { readOrders, updateOrder, deleteOrder } from "@/lib/orders";
 import { sendShipmentEmail } from "@/lib/email";
 
 export async function GET() {
-  const orders = readOrders();
+  const orders = await readOrders();
   // 最新的订单排前面
   return NextResponse.json(orders.slice().reverse());
 }
@@ -26,7 +26,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: "缺少订单号" }, { status: 400 });
     }
 
-    const order = updateOrder(orderNumber, updates);
+    const order = await updateOrder(orderNumber, updates);
     if (!order) {
       return NextResponse.json({ error: "订单不存在" }, { status: 404 });
     }
@@ -61,7 +61,7 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: "缺少订单号" }, { status: 400 });
     }
 
-    const ok = deleteOrder(orderNumber);
+    const ok = await deleteOrder(orderNumber);
     if (!ok) {
       return NextResponse.json({ error: "订单不存在" }, { status: 404 });
     }

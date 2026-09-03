@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       paymentMethod: body.paymentMethod === "paypal" ? "paypal" : "stripe",
     };
 
-    const order = createOrder(input);
+    const order = await createOrder(input);
     return NextResponse.json({ ok: true, orderNumber: order.orderNumber });
   } catch (error) {
     return NextResponse.json(

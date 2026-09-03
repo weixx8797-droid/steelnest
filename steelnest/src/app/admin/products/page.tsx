@@ -17,6 +17,22 @@ export default function AdminProductsPage() {
   const [imageUrlInput, setImageUrlInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // 新增产品表单状态
+  const [creating, setCreating] = useState(false);
+  const [newProduct, setNewProduct] = useState({
+    name: "",
+    englishName: "",
+    category: "desk" as Product["category"],
+    price: 0,
+    originalPrice: undefined as number | undefined,
+    tagline: "",
+    description: "",
+    featuresText: "",
+    images: [] as string[],
+  });
+  const [newImageUrl, setNewImageUrl] = useState("");
+  const newFileInputRef = useRef<HTMLInputElement>(null);
+
   // 加载产品列表
   const loadProducts = () => {
     setLoading(true);
@@ -114,6 +130,93 @@ export default function AdminProductsPage() {
     loadProducts();
   };
 
+  // 新增产品：上传图片 → base64
+  const handleNewFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        setNewProduct((prev) => ({
+          ...prev,
+          images: [...prev.images, dataUrl],
+        }));
+      };
+      reader.readAsDataURL(file);
+    });
+    e.target.value = "";
+  };
+
+  const handleAddNewImageUrl = () => {
+    const url = newImageUrl.trim();
+    if (!url) return;
+    setNewProduct((prev) => ({ ...prev, images: [...prev.images, url] }));
+    setNewImageUrl("");
+  };
+
+  const removeNewImage = (index: number) => {
+    setNewProduct((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleCreate = async () => {
+    if (!newProduct.name.trim()) {
+      setMessage("❌ 请填写产品名");
+      return;
+    }
+    setSaving(true);
+    setMessage("");
+    try {
+      const features = newProduct.featuresText
+        .split("\n")
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      const res = await fetch("/api/admin/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newProduct.name.trim(),
+          englishName: newProduct.englishName.trim() || undefined,
+          category: newProduct.category,
+          price: newProduct.price,
+          originalPrice: newProduct.originalPrice || undefined,
+          tagline: newProduct.tagline,
+          description: newProduct.description,
+          features,
+          images: newProduct.images,
+        }),
+      });
+
+      if (res.ok) {
+        setMessage("✅ 新增成功，已上架");
+        setCreating(false);
+        setNewProduct({
+          name: "",
+          englishName: "",
+          category: "desk",
+          price: 0,
+          originalPrice: undefined,
+          tagline: "",
+          description: "",
+          featuresText: "",
+          images: [],
+        });
+        loadProducts();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setMessage("❌ 新增失败：" + (data.error || `状态 ${res.status}`));
+      }
+    } catch {
+      setMessage("❌ 网络错误");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -127,7 +230,15 @@ export default function AdminProductsPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800">产品管理</h1>
-        <span className="text-sm text-gray-500">{products.length} 款产品</span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-gray-500">{products.length} 款产品</span>
+          <button
+            onClick={() => setCreating(true)}
+            className="px-4 py-2 text-sm bg-brand-charcoal text-white rounded hover:bg-brand-copper transition-colors"
+          >
+            ＋ 新增产品
+          </button>
+        </div>
       </div>
 
       {message && (
@@ -226,6 +337,251 @@ export default function AdminProductsPage() {
           </table>
         </div>
       </div>
+
+      {/* 新增产品弹窗 */}
+      {creating && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4 max-h-[85vh] overflow-y-auto">
+            <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+              <h3 className="font-semibold text-gray-800">新增产品</h3>
+              <button
+                onClick={() => setCreating(false)}
+                className="text-gray-400 hover:text-gray-600 text-lg"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="p-5 space-y-4">
+              {/* 产品名 */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  产品名 <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={newProduct.name}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, name: e.target.value })
+                  }
+                  placeholder="例如：三层不锈钢置物架"
+                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                />
+              </div>
+
+              {/* 英文名（URL） */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  英文名 / URL 标识（可选，用于网址，建议英文）
+                </label>
+                <input
+                  type="text"
+                  value={newProduct.englishName}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, englishName: e.target.value })
+                  }
+                  placeholder="例如：3-tier-steel-shelf"
+                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                />
+              </div>
+
+              {/* 分类 */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  分类
+                </label>
+                <select
+                  value={newProduct.category}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      category: e.target.value as Product["category"],
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm bg-white"
+                >
+                  <option value="desk">Desk &amp; Counter（桌面/台面）</option>
+                  <option value="storage">Storage（收纳）</option>
+                  <option value="bathroom">Bathroom（浴室）</option>
+                </select>
+              </div>
+
+              {/* 价格 */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
+                    售价 (USD)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={newProduct.price}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        price: parseFloat(e.target.value) || 0,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
+                    原价（划线，可选）
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={newProduct.originalPrice || ""}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        originalPrice: e.target.value
+                          ? parseFloat(e.target.value)
+                          : undefined,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                  />
+                </div>
+              </div>
+
+              {/* 图片 */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  产品图片（第一张为主图）
+                </label>
+                {newProduct.images.length > 0 && (
+                  <div className="grid grid-cols-4 gap-2 mb-2">
+                    {newProduct.images.map((img, i) => (
+                      <div
+                        key={i}
+                        className="relative aspect-square rounded border border-gray-200 overflow-hidden group"
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={img}
+                          alt={`图片 ${i + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeNewImage(i)}
+                          className="absolute bottom-0 inset-x-0 bg-black/60 text-red-300 text-[10px] py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          删除
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <input
+                  ref={newFileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleNewFileUpload}
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => newFileInputRef.current?.click()}
+                  className="w-full px-3 py-2 text-sm border border-dashed border-gray-300 rounded text-gray-500 hover:border-brand-copper hover:text-brand-copper transition-colors"
+                >
+                  📤 上传图片（可多选）
+                </button>
+                <div className="flex gap-2 mt-2">
+                  <input
+                    type="text"
+                    placeholder="或粘贴图片 URL 链接"
+                    value={newImageUrl}
+                    onChange={(e) => setNewImageUrl(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddNewImageUrl();
+                      }
+                    }}
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddNewImageUrl}
+                    className="px-3 py-2 text-sm bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors"
+                  >
+                    添加
+                  </button>
+                </div>
+              </div>
+
+              {/* 一句话卖点 */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  一句话卖点 (tagline)
+                </label>
+                <input
+                  type="text"
+                  value={newProduct.tagline}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, tagline: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                />
+              </div>
+
+              {/* 长描述 */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  长描述 (description)
+                </label>
+                <textarea
+                  value={newProduct.description}
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, description: e.target.value })
+                  }
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                />
+              </div>
+
+              {/* 卖点列表 */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  卖点列表（每行一条）
+                </label>
+                <textarea
+                  value={newProduct.featuresText}
+                  onChange={(e) =>
+                    setNewProduct({
+                      ...newProduct,
+                      featuresText: e.target.value,
+                    })
+                  }
+                  rows={3}
+                  placeholder={"✓ 加厚冷轧钢，承重更强\n✓ 免打孔安装\n✓ 可回收环保材质"}
+                  className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="px-5 py-4 border-t border-gray-200 flex justify-end gap-3">
+              <button
+                onClick={() => setCreating(false)}
+                className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700"
+              >
+                取消
+              </button>
+              <button
+                onClick={handleCreate}
+                disabled={saving}
+                className="px-5 py-2 bg-brand-charcoal text-white rounded text-sm hover:bg-brand-copper transition-colors disabled:opacity-50"
+              >
+                {saving ? "创建中..." : "创建并上架"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 编辑弹窗 */}
       {editing && (

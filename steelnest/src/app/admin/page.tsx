@@ -1,11 +1,14 @@
 import { getAllProducts } from "@/data/products";
 import DashboardStats from "@/components/admin/DashboardStats";
 
+// 每次请求都读取最新产品数据，保证后台新增/编辑后统计实时刷新
+export const dynamic = "force-dynamic";
+
 /**
  * 管理后台 — 仪表盘首页
  */
 export default async function AdminDashboardPage() {
-  const products = getAllProducts();
+  const products = await getAllProducts();
 
   // 模拟统计数据（后续从实际数据源读取）
   const stats = {

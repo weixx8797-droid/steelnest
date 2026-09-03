@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 
 // ====== 告诉 Next.js 哪些页面需要预生成 ======
 export async function generateStaticParams() {
-  return getAllProducts().map((p) => ({ slug: p.slug }));
+  return (await getAllProducts()).map((p) => ({ slug: p.slug }));
 }
 
 // ====== 动态 SEO 标题 ======
@@ -25,7 +25,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return { title: "Not Found" };
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   return {
@@ -47,13 +47,13 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
 
-  const relatedProducts = getFeaturedProducts().filter(
+  const relatedProducts = (await getFeaturedProducts()).filter(
     (p) => p.slug !== product.slug
   );
 

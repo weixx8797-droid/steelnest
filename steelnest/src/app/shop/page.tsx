@@ -11,8 +11,8 @@ export const metadata = {
     "Browse our full collection of premium recyclable steel home organizers. Storage racks, desk organizers, bathroom accessories — all factory-direct from Luoyang.",
 };
 
-export default function ShopPage() {
-  const products = getAllProducts();
+export default async function ShopPage() {
+  const products = await getAllProducts();
 
   return (
     <div className="bg-brand-cream">

@@ -14,7 +14,7 @@ import {
 } from "@/data/products";
 
 export async function GET() {
-  const allProducts = getAllProducts();
+  const allProducts = await getAllProducts();
   return NextResponse.json(allProducts);
 }
 
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       `product-${Date.now()}`;
 
     // 检查 slug 是否已存在
-    const existing = getProductBySlug(slug);
+    const existing = await getProductBySlug(slug);
     if (existing) {
       return NextResponse.json({ error: "产品 slug 已存在" }, { status: 409 });
     }
@@ -60,9 +60,9 @@ export async function POST(request: Request) {
     };
 
     // 写入 products.json，立即可用
-    const all = getAllProducts();
+    const all = await getAllProducts();
     all.push(newProduct);
-    writeProducts(all);
+    await writeProducts(all);
 
     return NextResponse.json({ ok: true, product: newProduct });
   } catch (error) {
@@ -83,7 +83,7 @@ export async function PUT(request: Request) {
 
     if (!slug) return NextResponse.json({ error: "缺少 slug" }, { status: 400 });
 
-    const all = getAllProducts();
+    const all = await getAllProducts();
     const product = all.find((p) => p.slug === slug);
     if (!product) return NextResponse.json({ error: "产品不存在" }, { status: 404 });
 
@@ -101,7 +101,7 @@ export async function PUT(request: Request) {
     }
 
     // 持久化回 products.json
-    writeProducts(all);
+    await writeProducts(all);
 
     return NextResponse.json({ ok: true, product });
   } catch (error) {
