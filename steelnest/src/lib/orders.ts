@@ -94,6 +94,7 @@ async function writeOrders(orders: Order[]): Promise<void> {
     await put(BLOB_PATH, json, {
       access: "private",
       contentType: "application/json",
+      allowOverwrite: true,
     });
   } else {
     writeFileSync(ORDERS_FILE, json, "utf-8");

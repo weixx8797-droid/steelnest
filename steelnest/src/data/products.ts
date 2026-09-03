@@ -76,6 +76,7 @@ export async function writeProducts(products: Product[]): Promise<void> {
     await put(BLOB_PATH, json, {
       access: "private",
       contentType: "application/json",
+      allowOverwrite: true,
     });
   } else {
     writeFileSync(PRODUCTS_FILE, json, "utf-8");
