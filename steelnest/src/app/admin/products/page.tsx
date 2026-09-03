@@ -29,6 +29,7 @@ export default function AdminProductsPage() {
     tagline: "",
     description: "",
     featuresText: "",
+    specs: { material: "", dimensions: "", weightCapacity: "", weight: "" },
     images: [] as string[],
   });
   const [newImageUrl, setNewImageUrl] = useState("");
@@ -220,6 +221,7 @@ export default function AdminProductsPage() {
           tagline: newProduct.tagline,
           description: newProduct.description,
           features,
+          specs: newProduct.specs,
           images: newProduct.images,
         }),
       });
@@ -236,6 +238,7 @@ export default function AdminProductsPage() {
           tagline: "",
           description: "",
           featuresText: "",
+          specs: { material: "", dimensions: "", weightCapacity: "", weight: "" },
           images: [],
         });
         loadProducts();
@@ -548,6 +551,75 @@ export default function AdminProductsPage() {
                 </div>
               </div>
 
+              {/* 规格参数 */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  规格参数
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">材质 (material)</label>
+                    <input
+                      type="text"
+                      value={newProduct.specs.material}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          specs: { ...newProduct.specs, material: e.target.value },
+                        })
+                      }
+                      placeholder="例如：Reinforced Cold-Rolled Steel"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">尺寸 (dimensions)</label>
+                    <input
+                      type="text"
+                      value={newProduct.specs.dimensions}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          specs: { ...newProduct.specs, dimensions: e.target.value },
+                        })
+                      }
+                      placeholder="例如：32 x 22 x 28 cm"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">承重 (weight Capacity)</label>
+                    <input
+                      type="text"
+                      value={newProduct.specs.weightCapacity}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          specs: { ...newProduct.specs, weightCapacity: e.target.value },
+                        })
+                      }
+                      placeholder="例如：12 kg per tier"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">重量 (weight, 可选)</label>
+                    <input
+                      type="text"
+                      value={newProduct.specs.weight || ""}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          specs: { ...newProduct.specs, weight: e.target.value },
+                        })
+                      }
+                      placeholder="例如：1.8 kg"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+
               {/* 一句话卖点 */}
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">
@@ -777,6 +849,75 @@ export default function AdminProductsPage() {
                     }
                     className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                   />
+                </div>
+              </div>
+
+              {/* 规格参数 */}
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1">
+                  规格参数
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">材质 (material)</label>
+                    <input
+                      type="text"
+                      value={editing.specs?.material || ""}
+                      onChange={(e) =>
+                        setEditing({
+                          ...editing,
+                          specs: { ...editing.specs, material: e.target.value },
+                        })
+                      }
+                      placeholder="例如：Reinforced Cold-Rolled Steel"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">尺寸 (dimensions)</label>
+                    <input
+                      type="text"
+                      value={editing.specs?.dimensions || ""}
+                      onChange={(e) =>
+                        setEditing({
+                          ...editing,
+                          specs: { ...editing.specs, dimensions: e.target.value },
+                        })
+                      }
+                      placeholder="例如：32 x 22 x 28 cm"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">承重 (weight Capacity)</label>
+                    <input
+                      type="text"
+                      value={editing.specs?.weightCapacity || ""}
+                      onChange={(e) =>
+                        setEditing({
+                          ...editing,
+                          specs: { ...editing.specs, weightCapacity: e.target.value },
+                        })
+                      }
+                      placeholder="例如：12 kg per tier"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">重量 (weight, 可选)</label>
+                    <input
+                      type="text"
+                      value={editing.specs?.weight || ""}
+                      onChange={(e) =>
+                        setEditing({
+                          ...editing,
+                          specs: { ...editing.specs, weight: e.target.value },
+                        })
+                      }
+                      placeholder="例如：1.8 kg"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
                 </div>
               </div>
 
