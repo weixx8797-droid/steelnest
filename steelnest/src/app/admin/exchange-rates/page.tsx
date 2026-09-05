@@ -27,6 +27,7 @@ export default function ExchangeRatesPage() {
   const [rates, setRates] = useState<RatesData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [message, setMessage] = useState("");
   const [usdAmount, setUsdAmount] = useState(100);
 
   const fetchRates = async () => {
@@ -41,9 +42,21 @@ export default function ExchangeRatesPage() {
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await fetch("/api/admin/exchange-rates", { method: "POST" });
-    await fetchRates();
-    setRefreshing(false);
+    setMessage("");
+    try {
+      const res = await fetch("/api/admin/exchange-rates", { method: "POST" });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        setMessage("❌ 刷新失败：" + (data.error || "状态 " + res.status));
+      } else {
+        await fetchRates();
+        setMessage("✅ 已更新至 " + (data.rates?.updatedAt?.slice(0, 10) || "最新"));
+      }
+    } catch {
+      setMessage("❌ 网络错误");
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   if (loading) {
@@ -73,6 +86,10 @@ export default function ExchangeRatesPage() {
           {refreshing ? "刷新中..." : "🔄 刷新汇率"}
         </button>
       </div>
+
+      {message && (
+        <p className="text-xs text-gray-500">{message}</p>
+      )}
 
       {/* 汇率卡片 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
