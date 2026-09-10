@@ -1,9 +1,11 @@
 import { readInquiries } from "@/lib/inquiries";
+import { requireAdmin } from "@/lib/admin-auth";
 
 // 每次请求都读取最新询盘，保证后台实时刷新
 export const dynamic = "force-dynamic";
 
 export default async function AdminInquiriesPage() {
+  await requireAdmin();
   const inquiries = await readInquiries();
 
   return (

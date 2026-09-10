@@ -1,4 +1,8 @@
-export default function AdminAccioPage() {
+import { requireAdmin } from "@/lib/admin-auth";
+
+export default async function AdminAccioPage() {
+  await requireAdmin();
+
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold text-gray-800">ACCIO 对接</h1>

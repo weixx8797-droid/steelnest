@@ -12,8 +12,13 @@
  */
 
 import { NextResponse } from "next/server";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
+  if (!(await isAdminAuthenticated())) {
+    return NextResponse.json({ error: "未登录" }, { status: 401 });
+  }
+
   try {
     const formData = await request.formData();
     const imageFile = formData.get("image") as File | null;

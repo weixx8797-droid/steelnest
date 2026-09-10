@@ -266,3 +266,51 @@
 3. Resend 验证域名 + 填 `settings.json` 的 `email.senderEmail`。
 4. Vercel 补 `INQUIRY_NOTIFY_EMAIL`、`RESEND_API_KEY`。
 5. 换真实产品实拍图 + 真实 WhatsApp 号。
+
+---
+
+## 九、后台认证漏洞修复（2026-09-10 复查）
+
+### 漏洞一：默认密码可登录线上后台
+
+线上实测 `POST /api/admin/login` 用 `admin123` 返回 `200 {"ok":true}`。任何人都能进后台看客户询盘（姓名、邮箱、WhatsApp、需求）、订单数据，并随意修改商品和设置。
+
+修复（`src/lib/admin-token.ts` + `src/lib/admin-auth.ts`）：
+
+- 生产环境不再回退默认密码。没配 `ADMIN_PASSWORD` 时任何密码都登不进去；
+- 登录接口返回明确提示：`后台密码未配置：请在 Vercel 环境变量里新增 ADMIN_PASSWORD 并重新部署后再登录`（503），而不是含糊的"密码错误"；
+- 本地开发仍保留 `admin123`，不影响调试。
+
+**部署后你需要立刻做**：Vercel → Settings → Environment Variables 新增 `ADMIN_PASSWORD`（长随机密码，别用 admin123），然后 Redeploy。配好之前后台进不去，这是有意为之。
+
+### 漏洞二：伪造 cookie 可绕过登录直接看后台页面（更严重）
+
+线上实测：发一个 `admin_auth_token=bogus-value-12345` 的请求给 `/admin/inquiries`，返回 **200 并渲染后台页面**；不带 cookie 才跳登录页。
+
+原因有两个，缺一不可：
+
+1. `src/proxy.ts` 只判断 cookie **存在**，不校验内容；
+2. 后台页面本身没有调用 `requireAdmin()`，注释写的"认证由 middleware 统一处理"实际没有生效。
+
+当时线上询盘数为 0，所以还没有客户数据真正泄漏，但漏洞是张开着的。
+
+修复：
+
+- `proxy.ts` 改为调用 `verifyAdminToken()` 真正校验密码和签发时间，matcher 补上 `/admin` 本身；
+- 校验逻辑抽到 `src/lib/admin-token.ts`，不依赖 Node 专有 API，Edge Runtime 的 proxy 和 Node 的 API 路由共用同一套逻辑；
+- 4 个服务端渲染的后台页面（仪表盘 / 询盘 / 供应商 / ACCIO）补上 `await requireAdmin()` 做双重保险；
+- token 改用 **base64url** 编码：标准 base64 里的 `=` 会被 Next.js 写 cookie 时转义成 `%3D`，读回来校验必然失败，这也是本次排查中实际踩到的坑。
+
+### 顺带补齐：三个没有鉴权的后台接口
+
+| 接口 | 原来 | 现在 |
+| --- | --- | --- |
+| `POST /api/admin/ai-analyze` | 无鉴权，任何人可消耗你的 DeepSeek 额度 | 401 |
+| `GET /api/admin/api-usage` | 无鉴权，泄漏 API 用量与费用 | 401 |
+| `GET /api/admin/settings/api-status` | 无鉴权，泄漏哪些密钥已配置 | 401 |
+
+### 验证结果（本地生产模式实测）
+
+未配置 `ADMIN_PASSWORD` 时：登录返回 503；伪造 cookie 访问 `/admin/inquiries` 返回 307 跳登录；两个用量接口返回 401；前台首页与 `/shop` 正常 200。
+
+已配置 `ADMIN_PASSWORD` 时：新密码登录 200，有效 cookie 访问后台各页 200；`admin123` 返回 401；伪造 cookie 返回 307 / 401。

@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { requireAdmin } from "@/lib/admin-auth";
 
 interface Supplier {
   id: string;
@@ -21,6 +22,7 @@ function getSuppliers(): Supplier[] {
 }
 
 export default async function AdminSuppliersPage() {
+  await requireAdmin();
   const suppliers = getSuppliers();
 
   return (

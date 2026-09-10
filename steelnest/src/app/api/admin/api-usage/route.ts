@@ -5,6 +5,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 const USAGE_FILE = path.join(process.cwd(), "src/data/api-usage.json");
 
@@ -17,6 +18,10 @@ function readUsage() {
 }
 
 export async function GET() {
+  if (!(await isAdminAuthenticated())) {
+    return NextResponse.json({ error: "未登录" }, { status: 401 });
+  }
+
   const usage = readUsage();
 
   // 计算预估月费

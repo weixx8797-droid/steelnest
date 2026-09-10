@@ -1,14 +1,19 @@
 /**
  * Next.js Proxy — 管理后台路由保护（替代废弃的 middleware.ts）
  *
- * /admin/* 路径需要登录后才能访问
- * /admin/login 不需要保护（登录页本身）
+ * /admin/* 需要「有效」的登录 cookie，/admin/login 本身不保护。
+ *
+ * 注意：这里必须校验 token 内容，只判断 cookie 是否存在等于没锁。
+ * 曾经的写法只要随便塞一个 admin_auth_token 就能打开后台页面。
  */
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
-const AUTH_COOKIE = "admin_auth_token";
+import {
+  ADMIN_AUTH_COOKIE,
+  effectiveAdminPassword,
+  verifyAdminToken,
+} from "@/lib/admin-token";
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -19,9 +24,8 @@ export function proxy(request: NextRequest) {
   // 登录页不需要保护
   if (pathname === "/admin/login") return NextResponse.next();
 
-  // 检查 auth cookie
-  const token = request.cookies.get(AUTH_COOKIE);
-  if (!token) {
+  const token = request.cookies.get(ADMIN_AUTH_COOKIE);
+  if (!verifyAdminToken(token?.value, effectiveAdminPassword())) {
     const loginUrl = new URL("/admin/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
@@ -31,5 +35,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin", "/admin/:path*"],
 };

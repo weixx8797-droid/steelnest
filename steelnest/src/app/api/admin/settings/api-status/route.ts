@@ -3,6 +3,7 @@
  */
 
 import { NextResponse } from "next/server";
+import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 const TRACKED_KEYS = [
   "DEEPSEEK_API_KEY",
@@ -15,6 +16,10 @@ const TRACKED_KEYS = [
 ];
 
 export async function GET() {
+  if (!(await isAdminAuthenticated())) {
+    return NextResponse.json({ error: "未登录" }, { status: 401 });
+  }
+
   const status: Record<string, boolean> = {};
 
   for (const key of TRACKED_KEYS) {
