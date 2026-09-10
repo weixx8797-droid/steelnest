@@ -65,7 +65,7 @@ export async function POST(request: Request) {
       line_items: lineItems,
       // 自动应用优惠（满$49包邮可以在metadata中标记）
       metadata: {
-        source: "steelnest",
+        source: "laborigin",
       },
     });
 

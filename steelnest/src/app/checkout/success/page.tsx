@@ -32,8 +32,8 @@ export default function SuccessPage() {
 
           <p className="text-brand-steel leading-relaxed">
             Thank you for your purchase! 🎉 We&apos;ll send a confirmation
-            email with your order details shortly. Your SteelNest products are
-            being prepared at our Luoyang factory and will ship soon.
+            email with your order details shortly. Your LabOrigin order is
+            being prepared and will ship soon.
           </p>
 
           <div className="bg-brand-light rounded-xl p-6 space-y-3 text-sm text-left">

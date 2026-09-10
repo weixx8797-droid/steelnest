@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       englishName: body.englishName || "",
       englishDescription: body.englishDescription || "",
       tagline: body.tagline || "",
-      category: body.category || "desk",
+      category: body.category || "loose",
       images: body.images || [],
       marketingImages: body.marketingImages || [],
       marketingGenerated: false,

@@ -24,7 +24,7 @@ export default async function AdminDashboardPage() {
       <div>
         <h1 className="text-2xl font-bold text-gray-800">仪表盘</h1>
         <p className="text-sm text-gray-500 mt-0.5">
-          欢迎回来，这是你的 SteelNest 管理中枢
+          欢迎回来，这是你的 LabOrigin 管理中枢
         </p>
       </div>
 

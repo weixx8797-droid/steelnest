@@ -1,9 +1,9 @@
 /**
- * SteelNest 产品数据库
+ * LabOrigin 产品数据库（培育钻石库存）
  * 数据源：
  *  - 线上（Vercel）：Vercel Blob 存储，路径 "products.json"（需要环境变量 BLOB_READ_WRITE_TOKEN）
  *  - 本地开发：src/data/products.json（无 token 时自动回退到本地文件）
- * 新增产品：在后台创建，或直接编辑 products.json 添加一个对象
+ * 新增库存：在后台创建，或直接编辑 products.json 添加一个对象
  * 产品图片：放在 public/products/ 文件夹，引用路径 /products/xxx.jpg；也可使用外链 URL 或 base64 data URL
  */
 
@@ -11,27 +11,45 @@ import { readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { get, put } from "@vercel/blob";
 
+/** 钻石切型（同时作为 category 使用） */
+export type DiamondShape =
+  | "round"
+  | "princess"
+  | "oval"
+  | "emerald"
+  | "cushion"
+  | "pear"
+  | "marquise"
+  | "radiant";
+
+/** 裸钻规格 */
+export interface DiamondSpecs {
+  shape: string; // 切型描述，如 "Round Brilliant"
+  carat: string; // 克拉重量，如 "1.00 ct"
+  color: string; // 颜色等级，如 "D"
+  clarity: string; // 净度等级，如 "VVS1"
+  cut: string; // 切工，如 "Excellent"
+  certificate: string; // 证书，如 "IGI LG6204xxxxx"
+  polish?: string; // 抛光
+  symmetry?: string; // 对称性
+  fluorescence?: string; // 荧光
+}
+
 export interface Product {
   slug: string; // URL 用的唯一标识（英文短横线）
   name: string;
   tagline: string;
-  price: number; // 美元
+  price: number; // 指示价（美元），最终以询价为准
   originalPrice?: number; // 划线原价（有打折时用）
-  category: "desk" | "storage" | "bathroom";
+  category: DiamondShape; // 切型
   images: string[]; // 产品图片路径，第一张是主图
-  specs: {
-    material: string;
-    dimensions: string;
-    weightCapacity: string;
-    weight?: string;
-  };
-  colors: { name: string; hex: string }[];
+  specs: DiamondSpecs; // 裸钻规格
   features: string[]; // 卖点列表
   description: string; // 长描述
   inStock: boolean;
   isNew?: boolean;
   isBestseller?: boolean;
-  discount?: string; // 折扣标签文字，如 "20% OFF"
+  discount?: string; // 标签文字，如 "NEW"
 }
 
 const PRODUCTS_FILE = path.join(process.cwd(), "src/data/products.json");
@@ -95,9 +113,9 @@ export async function getProductBySlug(
   return (await readProducts()).find((p) => p.slug === slug);
 }
 
-/** 按分类筛选产品 */
+/** 按切型筛选产品 */
 export async function getProductsByCategory(
-  category: "desk" | "storage" | "bathroom"
+  category: DiamondShape
 ): Promise<Product[]> {
   return (await readProducts()).filter((p) => p.category === category);
 }

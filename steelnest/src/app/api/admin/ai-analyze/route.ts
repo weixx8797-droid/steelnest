@@ -28,32 +28,30 @@ export async function POST(request: Request) {
     }
 
     // 用用户提示构建 prompt（DeepSeek 文本模型不支持图片，但能根据描述生成）
-    const hint = userHint || "a home organization product made of steel";
+    const hint = userHint || "a lab-grown diamond product";
 
-    const prompt = `You are an e-commerce product copywriter for SteelNest, a premium steel home organization brand.
+    const prompt = `You are an e-commerce product copywriter for LabOrigin, a lab-grown diamond supply-chain brand.
 
 Based on this brief product description: "${hint}"
 
-Generate the following in JSON format. Make the copy compelling, professional, and optimized for US consumers.
+Generate the following in JSON format. Make the copy compelling, professional, and optimized for B2B jewelry buyers.
 
 Return ONLY valid JSON (no markdown):
 {
-  "name": "Product name in English (5-8 words max, include 'Steel' keyword)",
+  "name": "Diamond listing name in English (include carat, shape, color and clarity, e.g. '1.00ct Round Brilliant D VVS1')",
   "tagline": "One-line catchy tagline (10-15 words)",
-  "category": "desk | storage | bathroom",
-  "suggestedPrice": 29.99,
+  "category": "round | princess | oval | emerald | cushion | pear | marquise | radiant",
+  "suggestedPrice": 850,
   "features": ["Feature 1", "Feature 2", "Feature 3", "Feature 4", "Feature 5"],
-  "description": "Full product description paragraph (80-120 words, highlight eco-friendly steel, recyclable, durability, tool-free assembly if applicable)",
+  "description": "Full product description paragraph (80-120 words, highlight lab-grown origin, IGI/GIA certification, brilliance, ethical sourcing)",
   "specs": {
-    "material": "e.g., Cold-Rolled Steel",
-    "dimensions": "e.g., 32 × 22 × 28 cm",
-    "weightCapacity": "e.g., 12 kg per tier",
-    "weight": "e.g., 1.8 kg"
+    "shape": "e.g., Round Brilliant",
+    "carat": "e.g., 1.00 ct",
+    "color": "e.g., D",
+    "clarity": "e.g., VVS1",
+    "cut": "e.g., Excellent",
+    "certificate": "e.g., IGI LG6204XXXXX"
   },
-  "colors": [
-    { "name": "Charcoal Black", "hex": "#2D3436" },
-    { "name": "Matte White", "hex": "#F5F5F0" }
-  ],
   "seoKeywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"]
 }`;
 
@@ -102,14 +100,12 @@ Return ONLY valid JSON (no markdown):
       product: {
         name: productInfo.name || hint,
         tagline: productInfo.tagline || "",
-        category: productInfo.category || "desk",
-        suggestedPrice: productInfo.suggestedPrice || 29.99,
+        category: productInfo.category || "round",
+        suggestedPrice: productInfo.suggestedPrice || 0,
         features: productInfo.features || [],
         description: productInfo.description || "",
         specs: productInfo.specs || {},
-        colors: productInfo.colors || [
-          { name: "Charcoal Black", hex: "#2D3436" },
-        ],
+        colors: productInfo.colors || [],
         seoKeywords: productInfo.seoKeywords || [],
       },
     });

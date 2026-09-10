@@ -4,97 +4,97 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "SteelNest: Premium recyclable steel home organization, factory-direct from Luoyang's premier steel furniture industrial hub.",
+    "LabOrigin — a lab-grown diamond source agent and quality auditor based in Henan, China, connecting overseas jewelers to factory-direct supply.",
 };
 
 export default function AboutPage() {
   return (
-    <div className="bg-white">
+    <div className="bg-brand-cream">
       {/* ====== Hero ====== */}
       <section className="bg-brand-charcoal text-white">
-        <div className="container-page py-16 md:py-20">
-          <h1 className="text-3xl md:text-5xl font-bold leading-tight">
-            Steel Over Wood.
+        <div className="container-page py-20 md:py-28">
+          <div className="flex items-center gap-4">
+            <span className="h-px w-12 bg-brand-copper" />
+            <span className="font-serif italic text-brand-copper/90 text-sm tracking-wide">
+              About LabOrigin
+            </span>
+          </div>
+          <h1 className="font-serif text-4xl md:text-5xl leading-[1.1] mt-6">
+            Your eyes in Henan.
             <br />
-            <span className="text-brand-copper">That&apos;s Our Promise.</span>
+            <span className="text-gold">That&apos;s our role.</span>
           </h1>
         </div>
       </section>
 
       {/* ====== 品牌故事 ====== */}
-      <section className="container-page py-16 md:py-20">
-        <div className="max-w-3xl space-y-12">
-          {/* Our Story */}
-          <div className="space-y-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-brand-charcoal">
-              Our Story
+      <section className="container-page py-20 md:py-24">
+        <div className="max-w-3xl space-y-16">
+          <div className="space-y-5">
+            <span className="font-serif italic text-brand-copper text-sm">
+              Our story
+            </span>
+            <h2 className="font-serif text-3xl text-brand-charcoal leading-tight">
+              Minutes from the factories of Henan
             </h2>
             <p className="text-brand-steel leading-relaxed">
-              SteelNest was born in Luoyang&apos;s Pangcun Town — a place known
-              as China&apos;s capital of steel furniture manufacturing. For
-              decades, the factories here have produced world-class steel
-              products. But we saw an opportunity: to bring this craftsmanship
-              directly to homes around the world, with a mission that matters.
+              Henan is the undisputed center of the global lab-grown diamond
+              industry — the vast majority of the world&apos;s HPHT stones come
+              from this region. LabOrigin was founded here, minutes from the
+              factories of Zhengzhou, Nanyang, and Shangqiu.
             </p>
             <p className="text-brand-steel leading-relaxed">
-              Every year, millions of trees are cut down to make wooden
-              furniture and organizers — much of it discarded within a few
-              years. We asked: what if we could replace wood with steel?
-              Steel is stronger, lasts longer, and at the end of its life, it
-              is 100% recyclable. No trees. No landfill. Just a better way to
-              organize your home.
+              Overseas jewelers and brands don&apos;t need another middleman.
+              They need someone on the ground who can walk into a factory,
+              inspect a stone under 20x magnification, and tell them exactly
+              what they&apos;re buying. That&apos;s what we do.
             </p>
           </div>
 
-          {/* Factory Direct */}
-          <div className="space-y-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-brand-charcoal">
-              Factory Direct. No Middlemen.
+          <div className="space-y-5">
+            <span className="font-serif italic text-brand-copper text-sm">
+              Source agent &amp; quality auditor
+            </span>
+            <h2 className="font-serif text-3xl text-brand-charcoal leading-tight">
+              We don&apos;t manufacture — we audit
             </h2>
             <p className="text-brand-steel leading-relaxed">
-              Unlike traditional retail, SteelNest products come straight from
-              certified eco-conscious factories in Luoyang to your doorstep.
-              No distributors. No markups. No warehouses full of plastic
-              packaging. Just honest pricing for products built to last.
+              We bridge the information gap between Henan&apos;s factories and
+              overseas buyers. We source stones to your exact specs, verify
+              every IGI / GIA certificate against the physical stone, and
+              document condition with photo and video before anything ships.
             </p>
             <p className="text-brand-steel leading-relaxed">
-              We personally visit every factory we partner with. Each is
-              certified by the Henan Provincial Department of Commerce for
-              cross-border e-commerce, ensuring quality standards and ethical
-              production. You get premium steel goods at prices that reflect
-              what they actually cost to make.
+              You get factory-direct pricing, verified quality, and a partner
+              who&apos;s accountable for every stone — not a faceless listing.
             </p>
           </div>
 
-          {/* Sustainability */}
-          <div className="space-y-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-brand-charcoal">
-              Our Commitment to the Planet
-            </h2>
-            <div className="grid sm:grid-cols-3 gap-4">
+          <div className="space-y-8">
+            <span className="font-serif italic text-brand-copper text-sm">
+              What we promise
+            </span>
+            <div className="grid sm:grid-cols-3 gap-px bg-brand-charcoal/10 border border-brand-charcoal/10">
               {[
                 {
-                  icon: "♻️",
-                  title: "100% Recyclable",
-                  desc: "Every SteelNest product is made from recyclable cold-rolled steel. When its journey ends, it returns to the earth — not a landfill.",
+                  title: "Factory Direct",
+                  desc: "Real source relationships with vetted HPHT & CVD producers — no layers of markup.",
                 },
                 {
-                  icon: "🌳",
-                  title: "Steel Over Wood",
-                  desc: "Every steel shelf replaces wood that would come from trees. We estimate each product saves 0.3–2 trees over its lifetime.",
+                  title: "Verified Quality",
+                  desc: "Every stone inspected against its certificate before shipment, documented for you.",
                 },
                 {
-                  icon: "📦",
-                  title: "Minimal Packaging",
-                  desc: "We use recycled cardboard and zero plastic in our packaging. Flat-pack designs reduce shipping volume and carbon footprint.",
+                  title: "Accountable",
+                  desc: "One point of contact who stands behind every order, from melee to 5ct+.",
                 },
               ].map((item) => (
-                <div key={item.title} className="bg-brand-light rounded-xl p-6 space-y-2">
-                  <span className="text-2xl">{item.icon}</span>
-                  <h3 className="text-sm font-bold text-brand-charcoal">
+                <div key={item.title} className="bg-brand-cream p-8 space-y-3">
+                  <span className="block h-px w-8 bg-brand-copper" />
+                  <h3 className="font-serif text-lg text-brand-charcoal">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-brand-steel leading-relaxed">
+                  <p className="text-sm text-brand-steel leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
@@ -103,17 +103,17 @@ export default function AboutPage() {
           </div>
 
           {/* CTA */}
-          <div className="bg-brand-charcoal rounded-xl p-8 text-center text-white space-y-4">
-            <h3 className="text-xl font-bold">Ready to Make the Switch?</h3>
-            <p className="text-gray-400 max-w-md mx-auto text-sm">
-              Join thousands of homes choosing durable, recyclable steel over
-              disposable wood.
+          <div className="bg-brand-charcoal rounded-sm p-10 text-center text-white space-y-5">
+            <h3 className="font-serif text-2xl">Start sourcing with us</h3>
+            <p className="text-white/60 max-w-md mx-auto text-sm leading-relaxed">
+              Tell us what you need. We&apos;ll respond with pricing, lead
+              times, and available stock.
             </p>
             <Link
-              href="/shop"
-              className="inline-flex px-6 py-3 bg-brand-copper text-white text-sm font-semibold rounded-md hover:bg-[#B8953E] transition-colors"
+              href="/contact"
+              className="inline-flex px-8 py-3 bg-brand-copper text-white text-sm font-medium rounded-sm hover:bg-[#a9834a] transition-colors"
             >
-              Shop Our Collection
+              Request a Quote
             </Link>
           </div>
         </div>

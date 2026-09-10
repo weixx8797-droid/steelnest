@@ -15,11 +15,11 @@ function getSettingsEmail(): { senderName: string; senderEmail: string } {
     const raw = readFileSync(SETTINGS_FILE, "utf-8");
     const settings = JSON.parse(raw);
     return {
-      senderName: settings?.email?.senderName || "SteelNest",
+      senderName: settings?.email?.senderName || "LabOrigin",
       senderEmail: settings?.email?.senderEmail || "",
     };
   } catch {
-    return { senderName: "SteelNest", senderEmail: "" };
+    return { senderName: "LabOrigin", senderEmail: "" };
   }
 }
 
@@ -78,7 +78,7 @@ export async function sendShipmentEmail(order: Order): Promise<void> {
   const html = `<!DOCTYPE html>
 <html>
 <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #2D3436;">
-  <h2 style="color: #1a1f20;">Your SteelNest order is on its way! 🚚</h2>
+  <h2 style="color: #1a1f20;">Your LabOrigin order is on its way! 🚚</h2>
   <p>Hi,</p>
   <p>Good news — your order <strong>${order.orderNumber}</strong> has shipped.</p>
 
@@ -100,13 +100,13 @@ export async function sendShipmentEmail(order: Order): Promise<void> {
   } ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}</p>
 
   <p>Typical international delivery takes 7–14 business days.</p>
-  <p style="color:#666;">Thank you for choosing steel over wood. 🌿<br/>— The SteelNest Team</p>
+  <p style="color:#666;">Thank you for choosing lab-grown. 💎<br/>— The LabOrigin Team</p>
 </body>
 </html>`;
 
   await sendEmail({
     to: order.customerEmail,
-    subject: `Your SteelNest order ${order.orderNumber} has shipped`,
+    subject: `Your LabOrigin order ${order.orderNumber} has shipped`,
     html,
   });
 }

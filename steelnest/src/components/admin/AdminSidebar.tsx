@@ -50,9 +50,9 @@ export default function AdminSidebar() {
       {/* Logo 区域 */}
       <div className="px-5 py-5 border-b border-white/10">
         <Link href="/admin" className="flex items-center gap-2.5">
-          <Image src="/logo-icon.svg" alt="SteelNest" width={28} height={28} />
+          <Image src="/logo-icon.svg" alt="LabOrigin" width={28} height={28} />
           <div>
-            <div className="text-sm font-bold tracking-wide">SteelNest</div>
+            <div className="text-sm font-bold tracking-wide">LabOrigin</div>
             <div className="text-[10px] text-brand-copper tracking-wider">
               管理后台
             </div>

@@ -1,8 +1,8 @@
 {
   "brand": {
-    "name": "SteelNest",
-    "slogan": "Steel Over Wood — Stronger Homes, Fewer Trees",
-    "primaryColor": "#C9A96E",
+    "name": "LabOrigin",
+    "slogan": "Direct From the Source — Lab-Grown Diamonds",
+    "primaryColor": "#C5A059",
     "logoPath": "/logo-icon.svg"
   },
   "shipping": {
@@ -17,7 +17,7 @@
     "smtpHost": "",
     "smtpPort": 587,
     "senderEmail": "",
-    "senderName": "SteelNest Sourcing",
+    "senderName": "LabOrigin Sourcing",
     "provider": "resend"
   },
   "accio": {

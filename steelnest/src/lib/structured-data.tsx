@@ -1,4 +1,5 @@
 import type { Product } from "@/data/products";
+import { absoluteUrl, getSiteUrl } from "@/lib/site";
 
 /**
  * 产品结构化数据（JSON-LD）
@@ -10,26 +11,14 @@ export function ProductJsonLd({ product }: { product: Product }) {
     "@type": "Product",
     name: product.name,
     description: product.tagline,
-    image: product.images[0],
+    image: absoluteUrl(product.images[0]),
     sku: product.slug,
     brand: {
       "@type": "Brand",
-      name: "SteelNest",
+      name: "LabOrigin",
     },
-    offers: {
-      "@type": "Offer",
-      priceCurrency: "USD",
-      price: product.price.toFixed(2),
-      availability: product.inStock
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
-      itemCondition: "https://schema.org/NewCondition",
-      ...(product.originalPrice && {
-        priceValidUntil: new Date(
-          Date.now() + 30 * 24 * 60 * 60 * 1000
-        ).toISOString().split("T")[0],
-      }),
-    },
+    // B2B 询价制：没有公开价格，就不声明 offers。
+    // Google 对带 offers 却不带 price 的 Product 会报“缺少 price”错误。
     ...(product.specs && {
       additionalProperty: Object.entries(product.specs)
         .filter(([, v]) => v)
@@ -53,18 +42,19 @@ export function ProductJsonLd({ product }: { product: Product }) {
  * 网站级结构化数据（Organization）
  */
 export function OrganizationJsonLd() {
+  const siteUrl = getSiteUrl();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "SteelNest",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-    logo: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/logo-icon.svg`,
+    name: "LabOrigin",
+    url: siteUrl,
+    logo: `${siteUrl}/logo-icon.svg`,
     description:
-      "Premium recyclable steel home organization products, factory-direct from Luoyang, China.",
+      "Lab-grown diamond supply-chain portal — sourcing, quality auditing, and white-label manufacturing direct from Henan, China, the world's hub of lab-grown diamond production.",
     contactPoint: {
       "@type": "ContactPoint",
-      email: "hello@steelnest.com",
-      contactType: "customer service",
+      email: "sourcing@steelneststore.com",
+      contactType: "sales",
     },
   };
 

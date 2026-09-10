@@ -48,10 +48,11 @@ export async function POST(request: Request) {
       tagline: body.tagline || "",
       price: body.price || body.retailPriceUSD || 0,
       originalPrice: body.originalPrice || undefined,
-      category: body.category || "desk",
+      category: body.category || "round",
       images: body.images || [],
-      specs: body.specs || { material: "", dimensions: "", weightCapacity: "" },
-      colors: body.colors || [{ name: "Charcoal Black", hex: "#2D3436" }],
+      specs:
+        body.specs ||
+        { shape: "", carat: "", color: "", clarity: "", cut: "", certificate: "" },
       features: body.features || [],
       description: body.description || body.englishDescription || "",
       inStock: true,

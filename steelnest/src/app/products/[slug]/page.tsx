@@ -7,8 +7,8 @@ import {
 } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
-import AddToCartButton from "@/components/AddToCartButton";
 import { ProductJsonLd } from "@/lib/structured-data";
+import { absoluteUrl } from "@/lib/site";
 
 // 每次请求都读取最新 products.json，保证后台编辑后前台立即生效
 export const dynamic = "force-dynamic";
@@ -27,20 +27,19 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) return { title: "Not Found" };
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   return {
     title: product.name,
     description: product.tagline,
     openGraph: {
       title: product.name,
       description: product.tagline,
-      images: [{ url: `${siteUrl}${product.images[0]}`, width: 400, height: 400 }],
+      images: [{ url: absoluteUrl(product.images[0]), width: 400, height: 400 }],
       type: "website",
     },
   };
 }
 
-// ====== 产品详情页面 ======
+// ====== 钻石详情页面 ======
 export default async function ProductPage({
   params,
 }: {
@@ -57,31 +56,43 @@ export default async function ProductPage({
     (p) => p.slug !== product.slug
   );
 
+  const specLabels: Record<string, string> = {
+    shape: "Shape",
+    carat: "Carat",
+    color: "Color",
+    clarity: "Clarity",
+    cut: "Cut",
+    certificate: "Certificate",
+    polish: "Polish",
+    symmetry: "Symmetry",
+    fluorescence: "Fluorescence",
+  };
+
   return (
-    <div className="bg-white">
+    <div className="bg-brand-cream">
       {/* Google 结构化数据（搜索结果富文本展示） */}
       <ProductJsonLd product={product} />
 
-      <div className="container-page py-8 md:py-12">
+      <div className="container-page py-10 md:py-14">
         {/* ====== 面包屑导航 ====== */}
-        <nav className="flex items-center gap-2 text-sm text-brand-steel mb-8">
+        <nav className="flex items-center gap-2 text-sm text-brand-steel mb-10">
           <Link href="/" className="hover:text-brand-copper transition-colors">
             Home
           </Link>
-          <span>/</span>
+          <span className="text-brand-charcoal/30">/</span>
           <Link
             href="/shop"
             className="hover:text-brand-copper transition-colors"
           >
-            Shop
+            Inventory
           </Link>
-          <span>/</span>
+          <span className="text-brand-charcoal/30">/</span>
           <span className="text-brand-charcoal truncate">{product.name}</span>
         </nav>
 
         {/* ====== 产品主体：左图右文 ====== */}
-        <div className="grid md:grid-cols-2 gap-10 lg:gap-16">
-          {/* ---- 左：产品图片画廊（点击缩略图切换大图） ---- */}
+        <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+          {/* ---- 左：产品图片画廊 ---- */}
           <ProductGallery
             images={product.images}
             name={product.name}
@@ -89,18 +100,14 @@ export default async function ProductPage({
           />
 
           {/* ---- 右：产品信息 ---- */}
-          <div className="space-y-6">
-            {/* 分类标签 */}
-            <span className="text-xs font-medium text-brand-copper uppercase tracking-widest">
-              {product.category === "desk"
-                ? "Desk & Counter"
-                : product.category === "bathroom"
-                  ? "Bathroom"
-                  : "Storage"}
+          <div className="space-y-7">
+            {/* 切型标签 */}
+            <span className="font-serif italic text-brand-copper text-sm capitalize">
+              {product.category}
             </span>
 
             {/* 产品名称 */}
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-brand-charcoal leading-tight">
+            <h1 className="font-serif text-3xl md:text-4xl text-brand-charcoal leading-tight">
               {product.name}
             </h1>
 
@@ -109,29 +116,32 @@ export default async function ProductPage({
               {product.tagline}
             </p>
 
-            {/* 价格 */}
+            {/* 指示价 */}
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-brand-charcoal">
-                ${product.price}
+              <span className="font-serif text-3xl text-brand-charcoal">
+                ${product.price.toLocaleString()}
               </span>
-              {product.originalPrice && (
-                <span className="text-lg text-gray-400 line-through">
-                  ${product.originalPrice}
-                </span>
-              )}
+              <span className="text-sm text-brand-steel">
+                indicative price — final quote on request
+              </span>
             </div>
 
-            {/* 加购按钮（含颜色选择）*/}
-            <AddToCartButton product={product} />
+            {/* 询价按钮 */}
+            <Link
+              href={`/contact?product=${encodeURIComponent(product.slug)}`}
+              className="inline-flex w-full md:w-auto items-center justify-center px-10 py-3.5 text-sm font-medium bg-brand-charcoal text-white rounded-sm hover:bg-brand-copper transition-colors tracking-wide"
+            >
+              Request a Quote
+            </Link>
 
             {/* 卖点摘要 */}
-            <ul className="space-y-2 border-t border-gray-100 pt-6">
+            <ul className="space-y-3 border-t border-brand-charcoal/10 pt-7">
               {product.features.map((feat, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-2 text-sm text-brand-steel"
+                  className="flex items-start gap-3 text-sm text-brand-steel"
                 >
-                  <span className="text-brand-leaf mt-0.5">✓</span>
+                  <span className="text-brand-copper mt-0.5">—</span>
                   {feat}
                 </li>
               ))}
@@ -141,30 +151,29 @@ export default async function ProductPage({
 
         {/* ====== 规格参数表 ====== */}
         <section className="mt-20">
-          <h2 className="text-2xl font-bold text-brand-charcoal mb-6">
-            Specifications
+          <h2 className="font-serif text-2xl text-brand-charcoal mb-8">
+            Diamond specifications
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {Object.entries(product.specs).map(([key, value]) => (
-              <div
-                key={key}
-                className="bg-brand-light rounded-lg p-5 space-y-1"
-              >
-                <span className="text-xs text-brand-steel uppercase tracking-wider">
-                  {key.replace(/([A-Z])/g, " $1").trim()}
-                </span>
-                <p className="text-sm font-semibold text-brand-charcoal">
-                  {value}
-                </p>
-              </div>
-            ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-px bg-brand-charcoal/10 border border-brand-charcoal/10">
+            {Object.entries(product.specs)
+              .filter(([, v]) => v)
+              .map(([key, value]) => (
+                <div key={key} className="bg-brand-cream p-6 space-y-1.5">
+                  <span className="text-xs text-brand-steel">
+                    {specLabels[key] || key}
+                  </span>
+                  <p className="font-serif text-base text-brand-charcoal">
+                    {value}
+                  </p>
+                </div>
+              ))}
           </div>
         </section>
 
         {/* ====== 长描述 ====== */}
         <section className="mt-16 max-w-3xl">
-          <h2 className="text-2xl font-bold text-brand-charcoal mb-4">
-            About This Product
+          <h2 className="font-serif text-2xl text-brand-charcoal mb-5">
+            About this stone
           </h2>
           <p className="text-brand-steel leading-relaxed text-lg">
             {product.description}
@@ -174,10 +183,10 @@ export default async function ProductPage({
         {/* ====== 你可能也喜欢 ====== */}
         {relatedProducts.length > 0 && (
           <section className="mt-20">
-            <h2 className="text-2xl font-bold text-brand-charcoal mb-6">
-              You May Also Like
+            <h2 className="font-serif text-2xl text-brand-charcoal mb-8">
+              More from our inventory
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedProducts.map((p) => (
                 <ProductCard key={p.slug} product={p} />
               ))}

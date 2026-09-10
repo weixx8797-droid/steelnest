@@ -10,217 +10,234 @@ export default async function Home() {
   return (
     <>
       {/* ========== Hero 主视觉区 ========== */}
-      <section className="relative bg-gradient-to-br from-brand-charcoal via-[#1a1f20] to-brand-charcoal text-white overflow-hidden">
-        <div className="container-page py-20 md:py-32 lg:py-40">
-          <div className="max-w-2xl space-y-6">
-            {/* 环保标签 */}
-            <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-widest uppercase bg-brand-leaf/20 text-brand-leaf border border-brand-leaf/30 rounded-full">
-              🌿 Eco-Friendly
-            </span>
+      <section className="relative bg-brand-charcoal text-white overflow-hidden">
+        {/* 柔和的香槟金光晕 */}
+        <div className="absolute -top-48 -right-48 w-[640px] h-[640px] rounded-full bg-brand-copper/10 blur-3xl pointer-events-none" />
+        <div className="container-page relative py-24 md:py-36 lg:py-44">
+          <div className="max-w-2xl space-y-8">
+            {/* 眉题：发丝线 + 衬线斜体 */}
+            <div className="flex items-center gap-4">
+              <span className="h-px w-12 bg-brand-copper" />
+              <span className="font-serif italic text-brand-copper/90 text-sm tracking-wide">
+                Direct from Henan, China
+              </span>
+            </div>
 
             {/* 主标题 */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-              Steel Over Wood.
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight">
+              Lab-grown diamonds,
               <br />
-              <span className="text-brand-copper">Stronger Homes,</span>
-              <br />
-              Fewer Trees.
+              <span className="text-gold">from the source.</span>
             </h1>
 
             {/* 副标题 */}
-            <p className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-lg">
-              Premium recyclable steel storage — from Luoyang&apos;s finest
-              factories to your doorstep. Durable, sustainable, designed to
-              last.
+            <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-xl">
+              LabOrigin connects overseas jewelers and brands to Henan — the
+              world&apos;s hub of HPHT &amp; CVD lab-grown diamond production.
+              Certified, audited, and ready to scale.
             </p>
 
             {/* CTA 按钮组 */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <Link
                 href="/shop"
-                className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold bg-brand-copper text-white rounded-md hover:bg-[#B8953E] transition-colors tracking-wide"
+                className="inline-flex items-center justify-center px-9 py-3.5 text-sm font-medium bg-brand-copper text-white rounded-sm hover:bg-[#a9834a] transition-colors tracking-wide"
               >
-                Shop Collection
+                View Live Inventory
               </Link>
               <Link
-                href="/about"
-                className="inline-flex items-center justify-center px-8 py-3.5 text-sm font-semibold border border-white/20 text-white rounded-md hover:bg-white/10 transition-colors tracking-wide"
+                href="/contact"
+                className="inline-flex items-center justify-center px-9 py-3.5 text-sm font-medium border border-white/25 text-white rounded-sm hover:border-brand-copper hover:text-brand-copper transition-colors tracking-wide"
               >
-                Our Story
+                Request a Quote
               </Link>
             </div>
           </div>
         </div>
 
-        {/* 底部装饰斜线 */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-brand-cream to-transparent" />
+        {/* 底部金发丝线 */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-copper/50 to-transparent" />
       </section>
 
       {/* ========== 卖点条 ========== */}
-      <section className="border-b border-gray-100 bg-white">
-        <div className="container-page py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <section className="border-b border-brand-charcoal/10 bg-brand-cream">
+        <div className="container-page py-14">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-8">
             {[
               {
-                icon: "♻️",
-                title: "100% Recyclable",
-                desc: "Steel that returns to earth",
+                title: "Source Direct",
+                desc: "Henan factory-direct access",
               },
               {
-                icon: "🏭",
-                title: "Factory Direct",
-                desc: "No middlemen, better value",
+                title: "IGI · GIA Certified",
+                desc: "Every stone graded & verifiable",
               },
               {
-                icon: "📦",
-                title: "Free Over $49",
-                desc: "Fast worldwide shipping",
+                title: "Quality Audited",
+                desc: "Inspected before it ships",
               },
               {
-                icon: "🛡️",
-                title: "5 Year Warranty",
-                desc: "Built to outlast wood",
+                title: "White-Label Ready",
+                desc: "Dropship under your brand",
               },
             ].map((item) => (
-              <div key={item.title} className="space-y-2">
-                <span className="text-2xl">{item.icon}</span>
-                <h3 className="text-sm font-semibold text-brand-charcoal">
+              <div key={item.title} className="space-y-3">
+                <span className="block h-px w-8 bg-brand-copper" />
+                <h3 className="font-serif text-base text-brand-charcoal">
                   {item.title}
                 </h3>
-                <p className="text-xs text-brand-steel">{item.desc}</p>
+                <p className="text-sm text-brand-steel leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ========== 产品分类导览 ========== */}
-      <section className="container-page py-16 md:py-20">
-        <div className="text-center mb-12 space-y-3">
-          <h2 className="text-3xl md:text-4xl font-bold text-brand-charcoal">
-            Explore Our Collection
+      {/* ========== 支柱导览 ========== */}
+      <section className="container-page py-20 md:py-28">
+        <div className="max-w-xl mb-14 space-y-4">
+          <span className="font-serif italic text-brand-copper text-sm">
+            What we offer
+          </span>
+          <h2 className="font-serif text-3xl md:text-4xl text-brand-charcoal leading-tight">
+            Your supply-chain partner
           </h2>
-          <p className="text-brand-steel max-w-lg mx-auto">
-            Thoughtfully designed steel organizers for every corner of your home
+          <p className="text-brand-steel leading-relaxed">
+            Everything you need to build a lab-grown diamond business — from
+            sourcing to fulfillment.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-brand-charcoal/10 border border-brand-charcoal/10">
           {[
             {
-              title: "Storage Racks",
-              desc: "Modular shelving for kitchen, garage, and beyond",
-              href: "/shop?category=storage",
-              color: "from-amber-100 to-orange-50",
-              emoji: "📚",
+              title: "Source Capability",
+              desc: "HPHT & CVD stones direct from Henan's production hub",
+              href: "/capabilities",
             },
             {
-              title: "Desk Organizers",
-              desc: "Clean up your workspace with steel elegance",
-              href: "/shop?category=desk",
-              color: "from-gray-100 to-stone-50",
-              emoji: "🖥️",
+              title: "White Label",
+              desc: "Dropshipping, custom packaging, and setting services",
+              href: "/white-label",
             },
             {
-              title: "Bathroom Accessories",
-              desc: "Rust-proof steel for damp environments",
-              href: "/shop?category=bathroom",
-              color: "from-blue-50 to-slate-50",
-              emoji: "🛁",
+              title: "Transparency",
+              desc: "4C education, CVD vs HPHT, and our audit standard",
+              href: "/transparency",
+            },
+            {
+              title: "Case Studies",
+              desc: "How we help designers and brands scale",
+              href: "/case-studies",
             },
           ].map((cat) => (
             <Link
               key={cat.title}
               href={cat.href}
-              className={`group relative bg-gradient-to-br ${cat.color} rounded-xl p-8 hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-brand-copper/30`}
+              className="group bg-brand-cream p-8 flex flex-col justify-between min-h-[220px] hover:bg-brand-light transition-colors duration-300"
             >
-              <span className="text-4xl mb-4 block">{cat.emoji}</span>
-              <h3 className="text-lg font-semibold text-brand-charcoal group-hover:text-brand-copper transition-colors">
-                {cat.title}
-              </h3>
-              <p className="text-sm text-brand-steel mt-2">{cat.desc}</p>
-              <span className="inline-flex items-center gap-1 text-sm font-medium text-brand-copper mt-4 group-hover:gap-2 transition-all">
-                Shop Now →
+              <div className="space-y-3">
+                <span className="block h-px w-6 bg-brand-copper/50 group-hover:w-12 group-hover:bg-brand-copper transition-all duration-500" />
+                <h3 className="font-serif text-lg text-brand-charcoal group-hover:text-brand-copper transition-colors">
+                  {cat.title}
+                </h3>
+                <p className="text-sm text-brand-steel leading-relaxed">
+                  {cat.desc}
+                </p>
+              </div>
+              <span className="text-sm text-brand-copper opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                Learn more
               </span>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ========== 精选产品 ========== */}
-      <section className="container-page py-16 md:py-20">
-        <div className="flex items-center justify-between mb-10">
-          <div className="space-y-2">
-            <h2 className="text-3xl md:text-4xl font-bold text-brand-charcoal">
-              Featured Products
+      {/* ========== 精选库存 ========== */}
+      <section className="container-page py-16 md:py-24">
+        <div className="flex items-end justify-between mb-12">
+          <div className="space-y-3">
+            <span className="font-serif italic text-brand-copper text-sm">
+              Available now
+            </span>
+            <h2 className="font-serif text-3xl md:text-4xl text-brand-charcoal leading-tight">
+              Featured inventory
             </h2>
             <p className="text-brand-steel">
-              Our most-loved steel organizers, factory-direct from Luoyang
+              Selected certified loose diamonds, ready to ship
             </p>
           </div>
           <Link
             href="/shop"
-            className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-brand-copper hover:text-[#B8953E] transition-colors"
+            className="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-brand-charcoal hover:text-brand-copper transition-colors"
           >
-            View All →
+            View all
+            <span aria-hidden className="text-brand-copper">
+              →
+            </span>
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {featuredProducts.map((product) => (
             <ProductCard key={product.slug} product={product} />
           ))}
         </div>
 
-        <div className="text-center mt-8 sm:hidden">
+        <div className="text-center mt-10 sm:hidden">
           <Link
             href="/shop"
-            className="inline-flex items-center gap-1 text-sm font-semibold text-brand-copper hover:text-[#B8953E] transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-brand-copper"
           >
-            View All Products →
+            View all inventory →
           </Link>
         </div>
       </section>
 
-      {/* ========== 品牌故事片段 ========== */}
-      <section className="bg-white py-16 md:py-20">
-        <div className="container-page">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* 左侧文字 */}
-            <div className="space-y-6">
-              <span className="text-xs font-semibold tracking-widest uppercase text-brand-copper">
-                Our Mission
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-brand-charcoal leading-tight">
-                From Luoyang&apos;s Finest Factories to Your Home
+      {/* ========== 定位说明 ========== */}
+      <section className="bg-brand-charcoal text-white">
+        <div className="container-page py-20 md:py-28">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="space-y-7">
+              <div className="flex items-center gap-4">
+                <span className="h-px w-12 bg-brand-copper" />
+                <span className="font-serif italic text-brand-copper/90 text-sm">
+                  Who we are
+                </span>
+              </div>
+              <h2 className="font-serif text-3xl md:text-4xl leading-tight">
+                Your eyes in Henan.
               </h2>
-              <p className="text-brand-steel leading-relaxed">
-                Nestled in Luoyang&apos;s Pangcun Town — China&apos;s premier
-                steel furniture industrial hub — we partner directly with
-                certified eco-conscious factories. Every SteelNest product is
-                made from recyclable steel, eliminating the need for timber
-                while delivering unmatched durability.
-              </p>
-              <p className="text-brand-steel leading-relaxed">
-                No middlemen. No markups. Just honest, factory-direct
-                craftsmanship shipped straight to your door.
-              </p>
+              <div className="space-y-4 text-white/60 leading-relaxed">
+                <p>
+                  LabOrigin is a source agent and quality auditor for lab-grown
+                  diamonds. We don&apos;t ask you to trust a catalog — we run
+                  the factories, inspect the stones, and verify every
+                  certificate on your behalf.
+                </p>
+                <p>
+                  No middlemen. No hidden grades. Just factory-direct stones,
+                  documented and ready for your brand.
+                </p>
+              </div>
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-brand-copper hover:text-[#B8953E] transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-medium text-brand-copper hover:text-brand-copper/80 transition-colors"
               >
-                Read Our Full Story →
+                Read our story
+                <span aria-hidden>→</span>
               </Link>
             </div>
 
-            {/* 右侧图片占位（先用品牌色块代替，你有实拍图后替换） */}
-            <div className="aspect-[4/3] bg-gradient-to-br from-brand-light to-brand-steel/10 rounded-xl flex items-center justify-center">
-              <div className="text-center space-y-2">
-                <span className="text-5xl">🏭</span>
-                <p className="text-sm text-brand-steel">
-                  Luoyang Pangcun Factory
-                  <br />
-                  Your photo here
+            <div className="aspect-[4/3] bg-gradient-to-br from-white/5 to-transparent rounded-sm border border-white/10 flex items-center justify-center">
+              <div className="text-center space-y-3">
+                <span className="font-serif text-6xl text-brand-copper/60">
+                  ◆
+                </span>
+                <p className="text-sm text-white/40 tracking-wide">
+                  Henan lab-grown diamond production
                 </p>
               </div>
             </div>
@@ -229,20 +246,20 @@ export default async function Home() {
       </section>
 
       {/* ========== 底部 CTA ========== */}
-      <section className="container-page py-16 md:py-20 text-center">
-        <div className="bg-brand-charcoal rounded-2xl px-8 py-14 md:py-16 text-white space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold">
-            Ready to Make the Switch?
+      <section className="container-page py-20 md:py-28 text-center">
+        <div className="space-y-7">
+          <h2 className="font-serif text-3xl md:text-4xl text-brand-charcoal">
+            Ready to source lab-grown?
           </h2>
-          <p className="text-gray-400 max-w-md mx-auto">
-            Join thousands of homes choosing steel over wood. Free shipping on
-            orders over $49.
+          <p className="text-brand-steel max-w-md mx-auto leading-relaxed">
+            Send us your specs and quantities. We&apos;ll respond with pricing,
+            lead times, and available stock within 24 hours.
           </p>
           <Link
-            href="/shop"
-            className="inline-flex items-center px-8 py-3.5 text-sm font-semibold bg-brand-copper text-white rounded-md hover:bg-[#B8953E] transition-colors tracking-wide"
+            href="/contact"
+            className="inline-flex items-center px-10 py-3.5 text-sm font-medium bg-brand-charcoal text-white rounded-sm hover:bg-brand-copper transition-colors tracking-wide"
           >
-            Browse All Products
+            Request a Quote
           </Link>
         </div>
       </section>

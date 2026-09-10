@@ -3,80 +3,58 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useCart } from "@/lib/cart-context";
 
 // 导航链接 — 以后要加页面直接在这里加
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Shop", href: "/shop" },
-  { name: "About", href: "/about" },
+  { name: "Inventory", href: "/shop" },
+  { name: "Capabilities", href: "/capabilities" },
+  { name: "Transparency", href: "/transparency" },
   { name: "Contact", href: "/contact" },
 ];
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { totalItems, toggleCart } = useCart();
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+    <header className="sticky top-0 z-50 bg-brand-cream/90 backdrop-blur-md border-b border-brand-charcoal/10">
       <div className="container-page flex items-center justify-between h-16 md:h-20">
         {/* ---- Logo ---- */}
-        <Link href="/" className="flex items-center gap-2 shrink-0">
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
           <Image
             src="/logo-icon.svg"
-            alt="SteelNest"
-            width={36}
-            height={36}
+            alt="LabOrigin"
+            width={34}
+            height={34}
             priority
           />
-          <span className="text-xl md:text-2xl font-bold text-brand-charcoal tracking-tight">
-            SteelNest
+          <span className="font-serif text-xl md:text-2xl text-brand-charcoal tracking-tight">
+            LabOrigin
           </span>
         </Link>
 
         {/* ---- 桌面导航 ---- */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-9">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-brand-steel hover:text-brand-copper transition-colors tracking-wide"
+              className="group relative text-[13px] font-medium text-brand-steel hover:text-brand-charcoal transition-colors tracking-wide"
             >
               {link.name}
+              <span className="absolute -bottom-1.5 left-0 h-px w-0 bg-brand-copper transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
         </nav>
 
-        {/* ---- 右侧图标 ---- */}
-        <div className="flex items-center gap-4">
-          {/* 购物车图标 */}
-          <button
-            onClick={toggleCart}
-            className="relative p-2 text-brand-steel hover:text-brand-copper transition-colors"
-            aria-label="Open cart"
+        {/* ---- 右侧 CTA ---- */}
+        <div className="flex items-center gap-5">
+          <Link
+            href="/contact"
+            className="hidden sm:inline-flex items-center px-6 py-2.5 text-[13px] font-medium tracking-wide text-brand-charcoal border border-brand-charcoal/20 rounded-sm hover:border-brand-copper hover:text-brand-copper transition-colors"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
-            {/* 购物车数量角标 */}
-            {totalItems > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-brand-copper text-white text-[10px] font-bold min-w-[16px] h-4 rounded-full flex items-center justify-center px-0.5">
-                {totalItems > 99 ? "99+" : totalItems}
-              </span>
-            )}
-          </button>
+            Request a Quote
+          </Link>
 
           {/* ---- 汉堡菜单按钮（手机端） ---- */}
           <button
@@ -92,7 +70,7 @@ export default function Header() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.5"
               >
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
@@ -105,7 +83,7 @@ export default function Header() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.5"
               >
                 <line x1="3" y1="6" x2="21" y2="6" />
                 <line x1="3" y1="12" x2="21" y2="12" />
@@ -118,7 +96,7 @@ export default function Header() {
 
       {/* ---- 手机端下拉菜单 ---- */}
       {menuOpen && (
-        <nav className="md:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-3">
+        <nav className="md:hidden bg-brand-cream border-t border-brand-charcoal/10 px-6 py-4 space-y-3">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -129,6 +107,13 @@ export default function Header() {
               {link.name}
             </Link>
           ))}
+          <Link
+            href="/contact"
+            className="block text-sm font-medium text-brand-copper py-2"
+            onClick={() => setMenuOpen(false)}
+          >
+            Request a Quote →
+          </Link>
         </nav>
       )}
     </header>

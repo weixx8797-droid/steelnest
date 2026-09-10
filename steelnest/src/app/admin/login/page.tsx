@@ -55,13 +55,13 @@ function LoginForm() {
         <div className="text-center mb-8">
           <Image
             src="/logo-icon.svg"
-            alt="SteelNest"
+            alt="LabOrigin"
             width={48}
             height={48}
             className="mx-auto mb-3"
           />
           <h1 className="text-xl font-bold text-white tracking-wide">
-            SteelNest
+            LabOrigin
           </h1>
           <p className="text-sm text-gray-400 mt-1">管理后台</p>
         </div>

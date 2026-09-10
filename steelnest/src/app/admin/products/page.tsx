@@ -23,13 +23,13 @@ export default function AdminProductsPage() {
   const [newProduct, setNewProduct] = useState({
     name: "",
     englishName: "",
-    category: "desk" as Product["category"],
+    category: "round" as Product["category"],
     price: 0,
     originalPrice: undefined as number | undefined,
     tagline: "",
     description: "",
     featuresText: "",
-    specs: { material: "", dimensions: "", weightCapacity: "", weight: "" },
+    specs: { shape: "", carat: "", color: "", clarity: "", cut: "", certificate: "" },
     images: [] as string[],
   });
   const [newImageUrl, setNewImageUrl] = useState("");
@@ -233,13 +233,13 @@ export default function AdminProductsPage() {
         setNewProduct({
           name: "",
           englishName: "",
-          category: "desk",
+          category: "round",
           price: 0,
           originalPrice: undefined,
           tagline: "",
           description: "",
           featuresText: "",
-          specs: { material: "", dimensions: "", weightCapacity: "", weight: "" },
+          specs: { shape: "", carat: "", color: "", clarity: "", cut: "", certificate: "" },
           images: [],
         });
         loadProducts();
@@ -401,7 +401,7 @@ export default function AdminProductsPage() {
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, name: e.target.value })
                   }
-                  placeholder="例如：三层不锈钢置物架"
+                  placeholder="例如：1.00ct Round Brilliant D VVS1"
                   className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                 />
               </div>
@@ -417,7 +417,7 @@ export default function AdminProductsPage() {
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, englishName: e.target.value })
                   }
-                  placeholder="例如：3-tier-steel-shelf"
+                  placeholder="例如：1-00ct-round-brilliant"
                   className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                 />
               </div>
@@ -437,9 +437,14 @@ export default function AdminProductsPage() {
                   }
                   className="w-full px-3 py-2 border border-gray-200 rounded text-sm bg-white"
                 >
-                  <option value="desk">Desk &amp; Counter（桌面/台面）</option>
-                  <option value="storage">Storage（收纳）</option>
-                  <option value="bathroom">Bathroom（浴室）</option>
+                  <option value="round">Round（圆形）</option>
+                  <option value="princess">Princess（公主方）</option>
+                  <option value="oval">Oval（椭圆）</option>
+                  <option value="emerald">Emerald（祖母绿）</option>
+                  <option value="cushion">Cushion（枕形）</option>
+                  <option value="pear">Pear（梨形）</option>
+                  <option value="marquise">Marquise（橄榄形）</option>
+                  <option value="radiant">Radiant（雷迪恩）</option>
                 </select>
               </div>
 
@@ -559,62 +564,92 @@ export default function AdminProductsPage() {
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs text-gray-400 mb-0.5">材质 (material)</label>
+                    <label className="block text-xs text-gray-400 mb-0.5">切型 (shape)</label>
                     <input
                       type="text"
-                      value={newProduct.specs.material}
+                      value={newProduct.specs.shape}
                       onChange={(e) =>
                         setNewProduct({
                           ...newProduct,
-                          specs: { ...newProduct.specs, material: e.target.value },
+                          specs: { ...newProduct.specs, shape: e.target.value },
                         })
                       }
-                      placeholder="例如：Reinforced Cold-Rolled Steel"
+                      placeholder="例如：Round Brilliant"
                       className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-0.5">尺寸 (dimensions)</label>
+                    <label className="block text-xs text-gray-400 mb-0.5">克拉 (carat)</label>
                     <input
                       type="text"
-                      value={newProduct.specs.dimensions}
+                      value={newProduct.specs.carat}
                       onChange={(e) =>
                         setNewProduct({
                           ...newProduct,
-                          specs: { ...newProduct.specs, dimensions: e.target.value },
+                          specs: { ...newProduct.specs, carat: e.target.value },
                         })
                       }
-                      placeholder="例如：32 x 22 x 28 cm"
+                      placeholder="例如：1.00 ct"
                       className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-0.5">承重 (weight Capacity)</label>
+                    <label className="block text-xs text-gray-400 mb-0.5">颜色 (color)</label>
                     <input
                       type="text"
-                      value={newProduct.specs.weightCapacity}
+                      value={newProduct.specs.color}
                       onChange={(e) =>
                         setNewProduct({
                           ...newProduct,
-                          specs: { ...newProduct.specs, weightCapacity: e.target.value },
+                          specs: { ...newProduct.specs, color: e.target.value },
                         })
                       }
-                      placeholder="例如：12 kg per tier"
+                      placeholder="例如：D"
                       className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-0.5">重量 (weight, 可选)</label>
+                    <label className="block text-xs text-gray-400 mb-0.5">净度 (clarity)</label>
                     <input
                       type="text"
-                      value={newProduct.specs.weight || ""}
+                      value={newProduct.specs.clarity}
                       onChange={(e) =>
                         setNewProduct({
                           ...newProduct,
-                          specs: { ...newProduct.specs, weight: e.target.value },
+                          specs: { ...newProduct.specs, clarity: e.target.value },
                         })
                       }
-                      placeholder="例如：1.8 kg"
+                      placeholder="例如：VVS1"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">切工 (cut)</label>
+                    <input
+                      type="text"
+                      value={newProduct.specs.cut}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          specs: { ...newProduct.specs, cut: e.target.value },
+                        })
+                      }
+                      placeholder="例如：Excellent"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">证书 (certificate)</label>
+                    <input
+                      type="text"
+                      value={newProduct.specs.certificate}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          specs: { ...newProduct.specs, certificate: e.target.value },
+                        })
+                      }
+                      placeholder="例如：IGI LG6204XXXXX"
                       className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                     />
                   </div>
@@ -665,7 +700,7 @@ export default function AdminProductsPage() {
                     })
                   }
                   rows={3}
-                  placeholder={"✓ 加厚冷轧钢，承重更强\n✓ 免打孔安装\n✓ 可回收环保材质"}
+                  placeholder={"✓ IGI 证书可官网核验\n✓ 发货前提供实物视频\n✓ 支持白标包装与代发"}
                   className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                 />
               </div>
@@ -860,62 +895,92 @@ export default function AdminProductsPage() {
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs text-gray-400 mb-0.5">材质 (material)</label>
+                    <label className="block text-xs text-gray-400 mb-0.5">切型 (shape)</label>
                     <input
                       type="text"
-                      value={editing.specs?.material || ""}
+                      value={editing.specs?.shape || ""}
                       onChange={(e) =>
                         setEditing({
                           ...editing,
-                          specs: { ...editing.specs, material: e.target.value },
+                          specs: { ...editing.specs, shape: e.target.value },
                         })
                       }
-                      placeholder="例如：Reinforced Cold-Rolled Steel"
+                      placeholder="例如：Round Brilliant"
                       className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-0.5">尺寸 (dimensions)</label>
+                    <label className="block text-xs text-gray-400 mb-0.5">克拉 (carat)</label>
                     <input
                       type="text"
-                      value={editing.specs?.dimensions || ""}
+                      value={editing.specs?.carat || ""}
                       onChange={(e) =>
                         setEditing({
                           ...editing,
-                          specs: { ...editing.specs, dimensions: e.target.value },
+                          specs: { ...editing.specs, carat: e.target.value },
                         })
                       }
-                      placeholder="例如：32 x 22 x 28 cm"
+                      placeholder="例如：1.00 ct"
                       className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-0.5">承重 (weight Capacity)</label>
+                    <label className="block text-xs text-gray-400 mb-0.5">颜色 (color)</label>
                     <input
                       type="text"
-                      value={editing.specs?.weightCapacity || ""}
+                      value={editing.specs?.color || ""}
                       onChange={(e) =>
                         setEditing({
                           ...editing,
-                          specs: { ...editing.specs, weightCapacity: e.target.value },
+                          specs: { ...editing.specs, color: e.target.value },
                         })
                       }
-                      placeholder="例如：12 kg per tier"
+                      placeholder="例如：D"
                       className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-400 mb-0.5">重量 (weight, 可选)</label>
+                    <label className="block text-xs text-gray-400 mb-0.5">净度 (clarity)</label>
                     <input
                       type="text"
-                      value={editing.specs?.weight || ""}
+                      value={editing.specs?.clarity || ""}
                       onChange={(e) =>
                         setEditing({
                           ...editing,
-                          specs: { ...editing.specs, weight: e.target.value },
+                          specs: { ...editing.specs, clarity: e.target.value },
                         })
                       }
-                      placeholder="例如：1.8 kg"
+                      placeholder="例如：VVS1"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">切工 (cut)</label>
+                    <input
+                      type="text"
+                      value={editing.specs?.cut || ""}
+                      onChange={(e) =>
+                        setEditing({
+                          ...editing,
+                          specs: { ...editing.specs, cut: e.target.value },
+                        })
+                      }
+                      placeholder="例如：Excellent"
+                      className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-0.5">证书 (certificate)</label>
+                    <input
+                      type="text"
+                      value={editing.specs?.certificate || ""}
+                      onChange={(e) =>
+                        setEditing({
+                          ...editing,
+                          specs: { ...editing.specs, certificate: e.target.value },
+                        })
+                      }
+                      placeholder="例如：IGI LG6204XXXXX"
                       className="w-full px-3 py-2 border border-gray-200 rounded text-sm"
                     />
                   </div>

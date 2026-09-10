@@ -40,7 +40,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 // ====== 常量 ======
 const FREE_SHIPPING_THRESHOLD = 49; // $49 包邮
 const FLAT_SHIPPING_FEE = 5.99; // 不满则 $5.99 运费
-const STORAGE_KEY = "steelnest-cart";
+const STORAGE_KEY = "laborigin-cart";
 
 // ====== 从 localStorage 读取购物车 ======
 function loadCart(): CartItem[] {
@@ -85,7 +85,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // ---- 加入购物车 ----
   const addToCart = useCallback(
     (product: Product, quantity = 1, color?: string) => {
-      const selectedColor = color || product.colors[0].name;
+      const selectedColor = color || "";
       setItems((prev) => {
         const existing = prev.find(
           (item) =>

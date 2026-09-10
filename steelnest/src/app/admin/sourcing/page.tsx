@@ -36,9 +36,10 @@ interface QueueItem {
 }
 
 const CATEGORIES = [
-  { value: "desk", label: "桌面收纳 (Desk)" },
-  { value: "storage", label: "储物 (Storage)" },
-  { value: "bathroom", label: "卫浴 (Bathroom)" },
+  { value: "loose", label: "裸钻 (Loose diamonds)" },
+  { value: "jewelry", label: "成品首饰 (Finished jewelry)" },
+  { value: "whitelabel", label: "白标 / 代发 (White-label)" },
+  { value: "melee", label: "碎钻 / 校准钻 (Melee)" },
 ];
 
 export default function AdminSourcingPage() {
@@ -88,7 +89,7 @@ export default function AdminSourcingPage() {
 
       const formData = new FormData();
       formData.append("image", file);
-      formData.append("hint", userHint || "steel home organization product");
+      formData.append("hint", userHint || "lab-grown diamond product");
 
       const res = await fetch("/api/admin/ai-analyze", {
         method: "POST",
@@ -204,7 +205,7 @@ export default function AdminSourcingPage() {
             <textarea
               value={userHint}
               onChange={(e) => setUserHint(e.target.value)}
-              placeholder="例：不锈钢桌面收纳架，三层可叠放，免工具安装"
+              placeholder="例：1ct 圆形裸钻，D 色 VVS1，IGI 证书，月需求 50 颗"
               rows={3}
               className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm resize-none focus:ring-2 focus:ring-brand-copper/30 focus:outline-none"
             />

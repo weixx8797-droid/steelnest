@@ -2,59 +2,50 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Returns & Refunds",
-  description: "SteelNest return policy — 30-day returns, refund process, and warranty information.",
+  title: "Returns & Quality Guarantee",
+  description:
+    "LabOrigin returns and quality guarantee — inspection, acceptance, and defect handling for lab-grown diamond orders.",
 };
 
 export default function ReturnsPage() {
   return (
-    <div className="bg-white">
+    <div className="bg-brand-cream">
       <div className="container-page py-12 md:py-16">
         <h1 className="text-3xl md:text-4xl font-bold text-brand-charcoal mb-2">
-          Returns & Refunds
+          Returns &amp; Quality Guarantee
         </h1>
-        <p className="text-brand-steel mb-10">Last updated: June 2026</p>
+        <p className="text-brand-steel mb-10">Last updated: September 2026</p>
 
         <div className="max-w-3xl space-y-10">
           {[
             {
-              title: "30-Day Return Policy",
+              title: "Approval Before Shipment",
               content:
-                "We accept returns within 30 days of the delivery date. If 30 days have passed since your order was delivered, unfortunately we cannot offer a return or refund.",
+                "Because every stone is documented and approved by you before it ships, change-of-mind returns are generally not applicable. You approve the exact stone, video, and certificate prior to dispatch.",
             },
             {
-              title: "Return Conditions",
+              title: "Inspection & Acceptance",
               content: "",
               list: [
-                "Products must be in original condition with all accessories, manuals, and packaging included.",
-                "Products showing signs of use, damage, or modification may not be eligible for a full refund.",
-                "Returns must be initiated within 30 days of the delivery date.",
-                "A valid order number or proof of purchase is required.",
+                "Inspect your order within 48 hours of delivery.",
+                "Report any discrepancy against your approved stone within 48 hours.",
+                "Photographic evidence is required for any claim.",
               ],
             },
             {
-              title: "Return Shipping",
-              content: "",
-              list: [
-                "Defective or incorrect items: SteelNest covers the return shipping cost. We will provide a prepaid return label.",
-                "Change of mind returns: The customer is responsible for return shipping costs.",
-                "We recommend using a trackable shipping service for all returns.",
-              ],
+              title: "Defective or Incorrect Items",
+              content:
+                "If a stone does not match the approved certificate or was damaged in transit, contact us within 48 hours of delivery with photos. We will replace the stone or issue a refund, and we cover the return shipping for our error.",
+            },
+            {
+              title: "Certificate Guarantee",
+              content:
+                "Every IGI or GIA certificate we supply can be verified online. If a certificate is found to be invalid or mismatched to the stone, we will resolve it at our cost.",
             },
             {
               title: "Refund Process",
               content:
-                "Once your return is received and inspected, we will notify you via email. Approved refunds will be processed to the original payment method within 5–10 business days. Please note that your bank or credit card company may require additional time to post the refund to your account.",
-            },
-            {
-              title: "Damaged or Defective Items",
-              content:
-                "If your order arrives damaged or with a manufacturing defect, please contact us within 48 hours of delivery. Include photos of the damage so we can process a replacement or refund as quickly as possible. We stand behind every product we ship.",
-            },
-            {
-              title: "5-Year Warranty",
-              content:
-                "Every SteelNest product comes with a 5-year manufacturer warranty against defects in materials and workmanship. This warranty does not cover damage from misuse, unauthorized modifications, or normal wear and tear. To make a warranty claim, contact us with your order number and a description of the issue.",
+                "Approved refunds are processed to the original payment method within 5–10 business days. Your bank or payment provider may require additional time to post the refund.",
             },
           ].map((section) => (
             <div key={section.title} className="space-y-3">
@@ -79,13 +70,13 @@ export default function ReturnsPage() {
             </div>
           ))}
 
-          <div className="bg-brand-light rounded-xl p-6 text-sm text-brand-steel space-y-2">
-            <p className="font-semibold text-brand-charcoal">Start a Return</p>
+          <div className="bg-brand-light rounded-sm p-6 text-sm text-brand-steel space-y-2">
+            <p className="font-semibold text-brand-charcoal">Start a Claim</p>
             <p>
-              To initiate a return, please email us at{" "}
-              <span className="text-brand-copper font-medium">returns@steelnest.com</span>{" "}
-              with your order number and the reason for return. We&apos;ll respond
-              within 24 hours with return instructions.
+              To report an issue, email us at{" "}
+              <span className="text-brand-copper font-medium">sourcing@steelneststore.com</span>{" "}
+              with your order number, photos, and a description. We&apos;ll
+              respond within 24 hours.
             </p>
             <p>
               Or visit our{" "}
