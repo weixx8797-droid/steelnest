@@ -76,6 +76,31 @@ export default function AdminProductsPage() {
     }
   };
 
+  // 用默认钻石库存覆盖当前库存（清掉品牌转型前遗留的旧品类商品）
+  const handleResetToDefaults = async () => {
+    const confirmed = window.confirm(
+      "会用 LabOrigin 默认的钻石库存覆盖当前全部商品，现有的商品（含品牌转型前的旧品类）都会被清空，且无法撤销。\n\n确定继续吗？"
+    );
+    if (!confirmed) return;
+
+    setSaving(true);
+    setMessage("");
+    try {
+      const res = await fetch("/api/admin/products/reset", { method: "POST" });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setMessage(`✅ 已恢复默认库存，共 ${data.count} 款钻石`);
+        loadProducts();
+      } else {
+        setMessage("❌ 恢复失败：" + (data.error || "状态 " + res.status));
+      }
+    } catch {
+      setMessage("❌ 网络错误");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   // 上传图片文件 → 先传到 Blob/服务器，拿到图片 URL 再保存
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -269,6 +294,14 @@ export default function AdminProductsPage() {
         <h1 className="text-2xl font-bold text-gray-800">产品管理</h1>
         <div className="flex items-center gap-3">
           <span className="text-sm text-gray-500">{products.length} 款产品</span>
+          <button
+            onClick={handleResetToDefaults}
+            disabled={saving}
+            title="用 LabOrigin 默认钻石库存覆盖当前全部商品"
+            className="px-4 py-2 text-sm border border-gray-300 text-gray-600 rounded hover:border-red-300 hover:text-red-600 transition-colors disabled:opacity-50"
+          >
+            恢复默认钻石库存
+          </button>
           <button
             onClick={() => setCreating(true)}
             className="px-4 py-2 text-sm bg-brand-charcoal text-white rounded hover:bg-brand-copper transition-colors"

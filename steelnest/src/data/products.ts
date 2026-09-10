@@ -10,6 +10,7 @@
 import { readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { get, put } from "@vercel/blob";
+import defaultCatalog from "./products.json";
 
 /** 钻石切型（同时作为 category 使用） */
 export type DiamondShape =
@@ -104,6 +105,15 @@ export async function writeProducts(products: Product[]): Promise<void> {
 /** 获取所有产品 */
 export async function getAllProducts(): Promise<Product[]> {
   return readProducts();
+}
+
+/**
+ * 打包时固化的默认钻石库存。
+ * 用于后台「恢复默认库存」：线上库存存在 Blob 里，改版前的旧品类数据
+ * 不会被代码更新覆盖，需要一次性重置。返回深拷贝，避免调用方改动模块缓存。
+ */
+export function getDefaultProducts(): Product[] {
+  return JSON.parse(JSON.stringify(defaultCatalog)) as Product[];
 }
 
 /** 根据 slug 获取单个产品 */

@@ -224,3 +224,45 @@
 3. **`INQUIRY_NOTIFY_EMAIL` / `RESEND_API_KEY`**：必须在 Vercel 环境变量里存在，否则一个询盘通知都收不到。
 4. **真实产品实拍图**：目前 5 个产品全部使用 `diamond-placeholder.svg`，`public/` 目录下一张实拍照片都没有。
 5. **真实 WhatsApp 号**：表单仍要求客户填 WhatsApp，但站点自身没有对外号码。
+
+---
+
+## 八、上线后复检补充（2026-09-10 深夜）
+
+### 1. 🔴 严重安全问题：后台还在用默认密码
+
+线上 `www.steelneststore.com/api/admin/login` 实测用默认密码 `admin123` 可以登录成功。这意味着**任何人都能进入后台**，看到全部客户询盘（姓名、邮箱、WhatsApp、需求）、订单数据，并能随意改商品、改设置、传图。
+
+必须立刻处理：Vercel → 项目 → Settings → Environment Variables 新增 `ADMIN_PASSWORD`，值设成一个长随机密码，然后 Redeploy。改完后旧 cookie 最多还能用 24 小时，之后必须用新密码登录。
+
+代码里的默认值 `admin123` 建议后续也去掉（没配就直接不允许登录），本轮先保留以免你锁死自己。
+
+### 2. 🔴 线上库存仍是旧品类（本次已修复）
+
+现象：网站品牌已经是 LabOrigin，但 `/shop` 列出的仍是「Desktop Multi-Layer Steel Storage Organizer」等 6 款钢制收纳架，还带着钢柜实拍图。
+
+原因：线上商品数据存在 **Vercel Blob**，不是代码里的 `products.json`。`readProducts()` 是「Blob 优先，文件回退」，所以换代码不会覆盖 Blob 里的旧数据；而后台原本**没有删除商品的功能**，旧商品无法清理。
+
+修复：新增 `POST /api/admin/products/reset`（`src/app/api/admin/products/reset/route.ts`）和后台「恢复默认钻石库存」按钮。点击后会弹窗二次确认，确认后把 Blob 里的商品整体替换为代码中打包的 5 款钻石库存。重置后仍可正常单个增删改。
+
+安全兜底：默认库存为空时接口直接拒绝执行，避免误清空线上数据。
+
+### 3. 本轮线上实测结论
+
+| 检查项 | 结果 |
+| --- | --- |
+| 首页标题 | `LabOrigin — Lab-Grown Diamonds Direct From the Source` |
+| `og:url` / `og:image` | 均为 `https://www.steelneststore.com/...` |
+| `sitemap.xml` | 全部为正式域名 |
+| `robots.txt` | 已含 `Disallow: /admin` |
+| `/cart`、`/checkout` | `308 -> /contact` |
+| `/opengraph-image` | `200 image/png` 53KB，已人工确认渲染正常 |
+| `/shop` 商品 | ⚠️ 仍是 6 款旧钢制商品，需用上面的按钮重置 |
+
+### 4. 建议你尽快处理的顺序
+
+1. 改 `ADMIN_PASSWORD`（安全，最紧急）。
+2. 后台点「恢复默认钻石库存」，把线上货架换成钻石。
+3. Resend 验证域名 + 填 `settings.json` 的 `email.senderEmail`。
+4. Vercel 补 `INQUIRY_NOTIFY_EMAIL`、`RESEND_API_KEY`。
+5. 换真实产品实拍图 + 真实 WhatsApp 号。
